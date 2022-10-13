@@ -116,6 +116,9 @@ public class Order {
 		this.orderId = orderId;
 	}
 
+	public ArrayList<OrderLine> getOrderLines(){
+		return orderLines;
+	}
 
 
 	/**

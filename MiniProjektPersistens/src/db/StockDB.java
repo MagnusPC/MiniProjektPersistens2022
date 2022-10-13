@@ -17,7 +17,7 @@ public class StockDB implements StockDBIF{
 			
 			// Get the orderline's product serial number and quantity
 			int q = ol.getQuantity();
-			int pSN = ol.getProductSerialNumber();
+			int pSN = ol.getProductId();
 			
 			/*We have the serial number of the orderline's product, so now we execute a query 
 			 * to get the id of all the Stock tuples/rows connected to the product. We return
