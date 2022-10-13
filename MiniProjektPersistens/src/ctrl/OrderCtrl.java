@@ -68,7 +68,7 @@ public class OrderCtrl {
 		invoiceDB.addInvoice(newOrder.getInvoice());
 		orderDB.insertOrder(newOrder);
 		orderLineDb.insertOrderLines(newOrder.getOrderLines());
-		pCtrl.updateStock();
+		pCtrl.updateStock(newOrder);
 		
 		dbCon.commitTransaction();
 		
