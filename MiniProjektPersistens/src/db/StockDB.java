@@ -1,5 +1,6 @@
 package db;
 
-public class StockDB {
+public class StockDB implements StockDBIF{
 
+	
 }
