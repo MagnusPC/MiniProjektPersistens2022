@@ -1,5 +1,8 @@
 package db;
 
-public interface ProductDBIF {
+import model.Product;
 
+public interface ProductDBIF {
+	Product findProductByID(int id) throws DataAccessException;
+	
 }
