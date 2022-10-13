@@ -6,9 +6,9 @@ public class Equipment extends Product {
 	private String type;
 	private String description;
 	
-	public Equipment(int id, String type, String description, String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
-		super(name, purchasePrice, salePrice, rentPrice, productType, supplierID);
-		this.id = id;
+	public Equipment(int id, String type, String description, int productID, String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
+		super(productID, name, purchasePrice, salePrice, rentPrice, productType, supplierID);
+		this.id = id; //TODO id skal stemme overens med product
 		this.type = type;
 		this.description = description;
 	}
