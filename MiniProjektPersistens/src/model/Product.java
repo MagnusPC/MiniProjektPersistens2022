@@ -1,7 +1,10 @@
 package model;
 
+
+
 public abstract class Product {
 	
+	private int productID;
 	private String name;
 	private double purchasePrice;
 	private double salePrice;
@@ -9,8 +12,8 @@ public abstract class Product {
 	private String productType;
 	private int supplierID;
 
-	public Product(String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
-		//super(); til datetime
+	public Product(int productID, String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
+		this.productID = productID;
 		this.name = name;
 		this.purchasePrice = purchasePrice;
 		this.salePrice = salePrice;
@@ -18,6 +21,10 @@ public abstract class Product {
 		this.productType = productType;
 		this.supplierID = supplierID;
 	}
+	
+//	public int getProductID() {
+//		return productID;
+//	} TODO hent prod id fra db
 	
 	/**
 	 * @return the name
