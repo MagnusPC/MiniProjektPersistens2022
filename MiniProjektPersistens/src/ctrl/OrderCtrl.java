@@ -64,8 +64,13 @@ public class OrderCtrl {
 	public Order finishOrder() {
 		newOrder.finishOrder();
 		dbCon.startTransaction();
-		invoiceDB.addInvoice(newOrder.getInvoice());
 		
+		invoiceDB.addInvoice(newOrder.getInvoice());
+		orderDB.insertOrder(newOrder);
+		orderLineDb.insertOrderLines(newOrder.getOrderLines());
+		pCtrl.updateStock();
+		
+		dbCon.commitTransaction();
 		
 		return newOrder;
 	}
