@@ -11,8 +11,10 @@ public class ProductDB implements ProductDBIF {
 	//Default visibility, package protected
 	Connection con;
 	
+	//TODO lav join table - evt direkte i db
+	private static final String tableEach = "CREATE ; ";
 	//TODO udvælg hvilke kolonner der skal selectes
-	private static final String findByID_Q = "SELECT * FROM product p, gunreplica gr, equipment e, clothes c WHERE id = ? AND (p.productID=gr.id OR p.productID=e.id OR p.productID=c.id); ";
+	private static final String findByID_Q = "SELECT * FROM product p, gunreplica gr, equipment e, clothes c WHERE productID = ? AND (p.productID=gr.id OR p.productID=e.id OR p.productID=c.id); ";
 	
 	private PreparedStatement findByID;
 	
