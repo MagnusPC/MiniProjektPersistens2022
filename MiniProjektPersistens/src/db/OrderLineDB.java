@@ -17,10 +17,10 @@ public class OrderLineDB implements OrderLineDBIF {
 	}
 	
 	@Override
-	public ArrayList<OrderLine> insertOrderLines(ArrayList<OrderLine> orderLines) throws SQLException {
+	public ArrayList<OrderLine> insertOrderLines(ArrayList<OrderLine> orderLines, int orderId) throws SQLException {
 		
 		for (OrderLine orderLine : orderLines) {
-			insertOrderLine.setInt(1, orderLine.getOrderId());
+			insertOrderLine.setInt(1, orderId);
 			insertOrderLine.setInt(2, orderLine.getProductId());
 			insertOrderLine.setDouble(3, orderLine.getSoldPrice());
 			insertOrderLine.setInt(4, orderLine.getQuantity());

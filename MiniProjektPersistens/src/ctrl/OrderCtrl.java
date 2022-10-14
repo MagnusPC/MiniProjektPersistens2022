@@ -48,15 +48,16 @@ public class OrderCtrl {
 		return c;
 	}
 	
-	public OrderLine addProductByProductId(int productId) {
-		OrderLine ol = pCtrl.findProductByProductId(productId);
+	public OrderLine addProductByProductId(int productId, int quantity) {
+		Product p = pCtrl.findProductByProductId(productId);
+		OrderLine ol = new OrderLine(p, quantity);
 		newOrder.addOrderLine(ol);
 		
 		return ol;
 	}
 	
 	public Invoice addInvoice() {
-		Invoice invoice = new Invoice(/* Hvad der skal bruges for at lave en invoice */);
+		Invoice invoice = new Invoice();
 		newOrder.addInvoiceToOrder(invoice);
 		
 		return invoice;
@@ -68,7 +69,7 @@ public class OrderCtrl {
 		
 		invoiceDB.addInvoice(newOrder.getInvoice());
 		orderDB.insertOrder(newOrder);
-		orderLineDb.insertOrderLines(newOrder.getOrderLines());
+		orderLineDB.insertOrderLines(newOrder.getOrderLines(), newOrder.getOrderId());
 		pCtrl.updateStock(newOrder);
 		
 		dbCon.commitTransaction();

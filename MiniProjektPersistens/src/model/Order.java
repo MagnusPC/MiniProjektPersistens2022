@@ -82,13 +82,13 @@ public class Order {
 		return this.orderType.getType();
 	}
 	
-	/**
-	 * 
-	 * @return invoice id
-	 */
-	public int getInvoiceNumber() {
-		return this.invoice.getInvoiceId();
-	}
+//	/**
+//	 * 
+//	 * @return invoice id
+//	 */
+//	public int getInvoiceNumber() {
+//		return this.invoice.getInvoiceId();
+//	}
 	
 	/**
 	 * 
@@ -98,6 +98,13 @@ public class Order {
 		return this.customer.getCustomerId();
 	}
 	
+	/**
+	 * 
+	 * 
+	 */
+	public Invoice getInvoice() {
+		return this.invoice;
+	}
 	
 	
 	/**
