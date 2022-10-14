@@ -14,9 +14,9 @@ public class ProductDB implements ProductDBIF {
 	//We find the product type
 	private static final String findProductTypeByID_Q = "SELECT productType FROM product WHERE productID = ? ; ";
 	//We join each subtable to their super
-	private static final String joinGunReplicaTable_Q = "SELECT * FROM Product, Gunreplica WHERE productID = ? ;";
-	private static final String joinEquipmentTable_Q = "SELECT * FROM Product, Equipment WHERE productID = ? ;";
-	private static final String joinClothesTable_Q = "SELECT * FROM Product, Clothes WHERE productID = ? ;";
+	private static final String joinGunReplicaTable_Q = "SELECT Product.productId, [name], purchasePrice, salePrice, rentPrice, productType, supplierId, caliber, material  FROM Product, Gunreplica WHERE Product.productID = GunReplica.productID AND GunReplica.productID = ? ;";
+	private static final String joinEquipmentTable_Q = "SELECT Product.productId, [name], purchasePrice, salePrice, rentPrice, productType, supplierId, [type], [description] FROM Product, Equipment WHERE Product.productID = Equipment.productID AND Equipment.productID = ? ;";
+	private static final String joinClothesTable_Q = "SELECT Product.productId, [name], purchasePrice, salePrice, rentPrice, productType, supplierId, [size], [color] FROM Product, Clothes WHERE Product.productID = Clothes.productID AND Clothes.productID = ?;";
 	
 	private PreparedStatement findByID, joinGun, joinEquip, joinCloth;
 	
@@ -40,7 +40,7 @@ public class ProductDB implements ProductDBIF {
 			ResultSet rs = findByID.executeQuery();
 			Product p = null;
 			if(rs.next()) {
-				p = buildObject(rs);
+				p = buildObject(rs, productID);
 			}
 			return p;
 		}
@@ -49,45 +49,57 @@ public class ProductDB implements ProductDBIF {
 		}
 	}
 	
-	private Product buildObject(ResultSet rs) throws SQLException {
+	private Product buildObject(ResultSet rs, int productID) throws SQLException {
 		Product p = null;
-			if(rs.getString("productType")=="GunReplica") {
+			if(rs.getString("productType").equals("GunReplica")) {
 				//We overwrite the resultset to create a new table
+				joinGun.setInt(1, productID);
 				rs = joinGun.executeQuery();
+				if(rs.next()) {
+					p = new GunReplica(rs.getString("caliber"),
+							rs.getString("material"),
+							rs.getInt("productID"),
+							rs.getString("name"),
+							rs.getFloat("purchasePrice"),
+							rs.getFloat("salePrice"),
+							rs.getFloat("rentPrice"),
+							rs.getString("productType"),
+							rs.getInt("supplierID"));
+				}
 				//We add in the data
-				p = new GunReplica(rs.getString("caliber"),
-						rs.getString("material"),
-						rs.getInt("productID"),
-						rs.getString("name"),
-						rs.getFloat("purchasePrice"),
-						rs.getFloat("salePrice"),
-						rs.getFloat("rentPrice"),
-						rs.getString("productType"),
-						rs.getInt("supplierID"));
+				
 			}
-			else if(rs.getString("productType")=="Equipment") {
+			else if(rs.getString("productType").equals("Equipment")) {
+				joinEquip.setInt(1, productID);
 				rs = joinEquip.executeQuery();
-				p = new GunReplica(rs.getString("type"),
-						rs.getString("description"),
-						rs.getInt("productID"),
-						rs.getString("name"),
-						rs.getFloat("purchasePrice"),
-						rs.getFloat("salePrice"),
-						rs.getFloat("rentPrice"),
-						rs.getString("productType"),
-						rs.getInt("supplierID"));
+				if(rs.next()) {
+					p = new GunReplica(rs.getString("type"),
+							rs.getString("description"),
+							rs.getInt("productID"),
+							rs.getString("name"),
+							rs.getFloat("purchasePrice"),
+							rs.getFloat("salePrice"),
+							rs.getFloat("rentPrice"),
+							rs.getString("productType"),
+							rs.getInt("supplierID"));
+				}
+				
 			}
-			else if(rs.getString("productType")=="Clothes") {
+			else if(rs.getString("productType").equals("Clothes")) {
+				joinCloth.setInt(1, productID);
 				rs = joinCloth.executeQuery();
-				p = new GunReplica(rs.getString("size"),
-						rs.getString("color"),
-						rs.getInt("productID"),
-						rs.getString("name"),
-						rs.getFloat("purchasePrice"),
-						rs.getFloat("salePrice"),
-						rs.getFloat("rentPrice"),
-						rs.getString("productType"),
-						rs.getInt("supplierID"));
+				if(rs.next()) {
+					p = new GunReplica(rs.getString("size"),
+							rs.getString("color"),
+							rs.getInt("productID"),
+							rs.getString("name"),
+							rs.getFloat("purchasePrice"),
+							rs.getFloat("salePrice"),
+							rs.getFloat("rentPrice"),
+							rs.getString("productType"),
+							rs.getInt("supplierID"));
+				}
+				
 			}
 		return p;
 	}
