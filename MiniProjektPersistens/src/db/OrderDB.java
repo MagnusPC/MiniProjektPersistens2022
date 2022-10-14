@@ -29,7 +29,7 @@ public class OrderDB implements OrderDBIF{
 		String deliveryStatus = newOrder.getDeliveryStatus();
 		LocalDate deliveryDate = newOrder.getDeliveryDate();
 		String orderType = newOrder.getOrderTypeString();
-		int invoiceNumber = newOrder.getInvoiceNumber();
+		int invoiceNumber = newOrder.getInvoice().getInvoiceNo();
 		int customerId = newOrder.getCustomerId();
 		
 		insertOrder.setDate(1, Date.valueOf(date));
