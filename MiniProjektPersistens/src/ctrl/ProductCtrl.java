@@ -9,6 +9,10 @@ public class ProductCtrl {
 	private StockDB stockDB;
 	
 	
+	public ProductCtrl() throws DataAccessException {
+		productDB = new ProductDB();
+		stockDB = new StockDB();
+	}
 	
 	public Product findProductByProductId(int productId) {
 		Product result = null;

@@ -15,6 +15,8 @@ import ctrl.OrderCtrl;
 import db.DataAccessException;
 //import gui.CreateOrder;
 import model.Customer;
+import model.OrderLine;
+import model.Product;
 
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -246,11 +248,11 @@ public class MainMenu extends JFrame {
 		JTable table2 = new JTable(modelProduct);
 		JScrollPane scrollPane = new JScrollPane(table2);
 		panel_6.add(scrollPane);
-		modelProduct.addColumn("1");
-		modelProduct.addColumn("2");
-		modelProduct.addColumn("3");
-		modelProduct.addColumn("4");
-		modelProduct.addColumn("5");
+		modelProduct.addColumn("Product Name");
+		modelProduct.addColumn("Quantity");
+//		modelProduct.addColumn("3");
+//		modelProduct.addColumn("4");
+//		modelProduct.addColumn("5");
 		
 		try {
 			oCtrl = new OrderCtrl();
@@ -280,12 +282,14 @@ public class MainMenu extends JFrame {
 			e.printStackTrace();
 		}
 		
-		System.out.println(c.getCustomerId());
 		
 		modelCustomer.addRow(new Object[] {c.getCustomerId(), c.getName(), c.getAdress(), c.getZipCode(), c.getCity(), c.getPhoneno()});
 	}
 	private void addProductByProductId() {
-	//Todo
+		OrderLine ol = null;
+		ol = oCtrl.addProductByProductId(Integer.valueOf(txtProductid.getText()), Integer.valueOf(txtQuantity.getText()));
+		
+		modelProduct.addRow(new Object[] {ol.getProductName(), ol.getQuantity()});
 	}
 	private void finishOrder() {
 	//Todo
