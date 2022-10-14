@@ -9,8 +9,7 @@ import model.GunReplica;
 import model.Product;
 
 public class ProductDB implements ProductDBIF {
-	//Default visibility, package protected
-	Connection con;
+	Connection con; //Default visibility, package protected
 	
 	//We find the product type
 	private static final String findProductTypeByID_Q = "SELECT productType FROM product WHERE productID = ? ; ";
@@ -30,10 +29,11 @@ public class ProductDB implements ProductDBIF {
 			joinCloth = con.prepareStatement(joinClothesTable_Q);
 		}
 		catch(SQLException e) {
-			throw new DataAccessException(e, "Could not prepare statement");
+			throw new DataAccessException(e, "Could not prepare statements");
 		}
 	}
 	
+	@Override
 	public Product findProductByID(int productID) throws DataAccessException {
 		try {
 			findByID.setInt(1, productID);
