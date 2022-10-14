@@ -11,7 +11,7 @@ import model.Order;
 public class OrderDB implements OrderDBIF{
 
 	private static final String insertOrderQ = "INSERT INTO [Order] values(?, ?, ?, ?, ?, ?)";
-	private static final String selectTopOrderIdQ = "SELECT MAX(orderId) from Order ";
+	private static final String selectTopOrderIdQ = "SELECT MAX(orderId) as orderId from [Order] ";
 	
 	private PreparedStatement insertOrder;
 	private PreparedStatement selectTopOrderId;
@@ -51,8 +51,11 @@ public class OrderDB implements OrderDBIF{
 	public int selectTopOrderId() throws SQLException {
 		
 		ResultSet rs = selectTopOrderId.executeQuery(); //Ved ikke om man får den nyeste når transaction ikke er commited
+		int orderId = 0;
 		
-		int orderId = rs.getInt("orderId");
+		if(rs.next()) {
+			orderId = rs.getInt("orderId");
+		}
 		
 		return orderId;
 	}

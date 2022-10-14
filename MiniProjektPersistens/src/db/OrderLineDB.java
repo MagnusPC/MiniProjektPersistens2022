@@ -25,7 +25,7 @@ public class OrderLineDB implements OrderLineDBIF {
 			insertOrderLine.setDouble(3, orderLine.getSoldPrice());
 			insertOrderLine.setInt(4, orderLine.getQuantity());
 			
-			insertOrderLine.executeQuery();
+			insertOrderLine.execute();
 		}
 		
 		return orderLines;

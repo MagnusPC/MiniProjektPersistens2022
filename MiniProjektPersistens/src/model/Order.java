@@ -150,6 +150,14 @@ public class Order {
 	}
 	
 	/**
+	 * 
+	 */
+	
+	private void addOrderType(OrderType ot) {
+		this.orderType = ot;
+	}
+	
+	/**
 	 * @param invoice the Invoice to add
 	 */
 	
@@ -186,6 +194,9 @@ public class Order {
 	 */
 	
 	public void finishOrder() {
+		OrderType ot = new OrderType("Sale", "sold through order");
+		addOrderType(ot);
+		
 		setDeliveryStatus("In Transit");
 		setDate(LocalDate.now());
 		setDeliveryDate(getDate().plusDays(3));

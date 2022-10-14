@@ -15,6 +15,8 @@ import ctrl.OrderCtrl;
 import db.DataAccessException;
 //import gui.CreateOrder;
 import model.Customer;
+import model.Invoice;
+import model.Order;
 import model.OrderLine;
 import model.Product;
 
@@ -195,6 +197,7 @@ public class MainMenu extends JFrame {
 		JButton btnAfslut = new JButton("Afslut");
 		btnAfslut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				addInvoice();
 				finishOrder();
 			}
 		});
@@ -285,14 +288,29 @@ public class MainMenu extends JFrame {
 		
 		modelCustomer.addRow(new Object[] {c.getCustomerId(), c.getName(), c.getAdress(), c.getZipCode(), c.getCity(), c.getPhoneno()});
 	}
+	
 	private void addProductByProductId() {
 		OrderLine ol = null;
 		ol = oCtrl.addProductByProductId(Integer.valueOf(txtProductid.getText()), Integer.valueOf(txtQuantity.getText()));
 		
 		modelProduct.addRow(new Object[] {ol.getProductName(), ol.getQuantity()});
 	}
+	
+	private void addInvoice() {
+		Invoice ai = null;
+		ai = oCtrl.addInvoice();
+		
+		
+	}
+	
 	private void finishOrder() {
-	//Todo
+		Order newOrder = null;
+		try {
+			newOrder = oCtrl.finishOrder();
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	

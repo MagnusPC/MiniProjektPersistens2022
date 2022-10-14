@@ -73,7 +73,7 @@ public class OrderCtrl {
 			invoiceDB.addInvoice(newOrder.getInvoice());
 			orderDB.insertOrder(newOrder);
 			orderLineDB.insertOrderLines(newOrder.getOrderLines(), newOrder.getOrderId());
-			pCtrl.updateStock(newOrder);
+			//pCtrl.updateStock(newOrder);
 			
 			dbCon.commitTransaction();
 		} catch (SQLException e) {

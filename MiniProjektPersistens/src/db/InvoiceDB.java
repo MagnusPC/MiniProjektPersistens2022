@@ -12,10 +12,10 @@ import java.sql.PreparedStatement;
 
 public class InvoiceDB implements InvoiceDBIF{
 
-	private static final String INSERT_Q = "INSERT into Invoice ? ? ?";
+	private static final String INSERT_Q = "INSERT into Invoice values (?, ?)";
 	private PreparedStatement insertPS;
 	
-	private static final String MAX_INVOICENO_Q = "SELECT MAX (invoiceNo) from Invoice";
+	private static final String MAX_INVOICENO_Q = "SELECT MAX (invoiceNo) as invoiceNo from Invoice";
 	private PreparedStatement max_InvoicenoPS;
 	
 	public InvoiceDB() throws db.DataAccessException {
@@ -41,9 +41,9 @@ public class InvoiceDB implements InvoiceDBIF{
 	public Invoice addInvoice(Invoice invoice) throws DataAccessException {
 		
 			try {
-				insertPS.setInt(1, invoice.getInvoiceNo());
-				insertPS.setDate(2, Date.valueOf(invoice.getPaymentDate()));
-				insertPS.setDouble(3, invoice.getInvoiceAmount());
+				//insertPS.setInt(1, invoice.getInvoiceNo());
+				insertPS.setDate(1, Date.valueOf(invoice.getPaymentDate()));
+				insertPS.setDouble(2, invoice.getInvoiceAmount());
 				
 				insertPS.executeUpdate();
 				
@@ -58,7 +58,7 @@ public class InvoiceDB implements InvoiceDBIF{
 				
 				int invoiceNo = 0;
 				while(rs.next()) {
-					invoiceNo = rs.getInt("invoiceNo");
+					invoiceNo = rs.getInt("invoiceNo") ;
 				}
 				
 				invoice.setInvoiceNo(invoiceNo);
