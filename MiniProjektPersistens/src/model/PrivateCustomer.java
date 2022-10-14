@@ -4,8 +4,8 @@ public class PrivateCustomer extends Customer{
 	
 	private int cpr;
 	
-	public PrivateCustomer(String name, String adress, int zipCode, String city, String phoneno, int cpr) {
-		super(name, adress, zipCode, city, phoneno);
+	public PrivateCustomer(int customerId,String name, String adress, int zipCode, String city, String phoneno, int cpr) {
+		super(customerId, name, adress, zipCode, city, phoneno);
 		this.setCpr(cpr);
 	}
 
