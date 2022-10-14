@@ -57,6 +57,7 @@ public class ProductDB implements ProductDBIF {
 				//We add in the data
 				p = new GunReplica(rs.getString("caliber"),
 						rs.getString("material"),
+						rs.getInt("productID"),
 						rs.getString("name"),
 						rs.getDouble("purchasePrice"),
 						rs.getDouble("salePrice"),
@@ -68,6 +69,7 @@ public class ProductDB implements ProductDBIF {
 				rs = joinEquip.executeQuery();
 				p = new GunReplica(rs.getString("type"),
 						rs.getString("description"),
+						rs.getInt("productID"),
 						rs.getString("name"),
 						rs.getDouble("purchasePrice"),
 						rs.getDouble("salePrice"),
@@ -79,6 +81,7 @@ public class ProductDB implements ProductDBIF {
 				rs = joinCloth.executeQuery();
 				p = new GunReplica(rs.getString("size"),
 						rs.getString("color"),
+						rs.getInt("productID"),
 						rs.getString("name"),
 						rs.getDouble("purchasePrice"),
 						rs.getDouble("salePrice"),

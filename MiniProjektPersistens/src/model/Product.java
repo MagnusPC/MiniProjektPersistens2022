@@ -4,7 +4,7 @@ package model;
 
 public abstract class Product {
 	
-//	private int productID;
+	private int productID;
 	private String name;
 	private double purchasePrice;
 	private double salePrice;
@@ -12,8 +12,8 @@ public abstract class Product {
 	private String productType;
 	private int supplierID;
 
-	public Product(String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
-		//this.productID = productID;
+	public Product(int productID, String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
+		this.productID = productID;
 		this.name = name;
 		this.purchasePrice = purchasePrice;
 		this.salePrice = salePrice;
@@ -22,9 +22,9 @@ public abstract class Product {
 		this.supplierID = supplierID;
 	}
 	
-//	public int getProductID() {
-//		return productID;
-//	} TODO hent prod id fra db
+	public int getProductID() {
+		return productID;
+	}
 	
 	/**
 	 * @return the name
