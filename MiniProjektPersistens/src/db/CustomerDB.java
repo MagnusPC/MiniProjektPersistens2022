@@ -13,23 +13,20 @@ import model.PrivateCustomer;
 
 public class CustomerDB implements CustomerDBIF{
 	
-	private static final String findAllQ =
-			"select, id name, adress, zipCode, city, phoneno";
-	private static final String findByPhonoNoQ =
-			findAllQ + " where phoneno = ?";
-	private static final String updateQ = 
-			"update persons set name = ?, adress = ?, zipCode = ? , city = ?, phoneno = ?";
+	private static final String findAllQ = "SELECT id, fname, lname, [address], zipCode, phoneNo, cpr, cvr FROM Customer";
+	private static final String findByPhonoNoQ = findAllQ + " WHERE phoneNo = ?";
+	//private static final String updateQ = "update persons set name = ?, adress = ?, zipCode = ? , city = ?, phoneno = ?";
+	private static final String getCityQ = "SELECT city FROM zipCodeCity where zipCode = ?";
 	
-	private PreparedStatement findAll, findByPhoneNo, update;
+	private PreparedStatement findAll, findByPhoneNo, update, getCity;
 	
 	public CustomerDB() throws DataAccessException {
 		try {
-			findAll = DBConnection.getInstance().getConnection()
-					.prepareStatement(findAllQ);
-			findByPhoneNo = DBConnection.getInstance().getConnection()
-					.prepareStatement(findByPhonoNoQ); 
-			update = DBConnection.getInstance().getConnection() 
-					.prepareStatement(updateQ);	
+			findAll = DBConnection.getInstance().getConnection().prepareStatement(findAllQ);
+			findByPhoneNo = DBConnection.getInstance().getConnection().prepareStatement(findByPhonoNoQ); 
+			getCity = DBConnection.getInstance().getConnection().prepareStatement(getCityQ);
+			
+			//update = DBConnection.getInstance().getConnection().prepareStatement(updateQ);	
 		} catch (SQLException e) {
 			throw new DataAccessException(e, "Could not prepare statement");
 		}
@@ -48,21 +45,26 @@ public class CustomerDB implements CustomerDBIF{
 	}
 
 	@Override
-	public Customer findCustomerByPhoneNo(String phoneno) throws DataAccessException {
+	public Customer findCustomerByPhoneNo(String phoneNo) throws DataAccessException {
+		Customer c = null;
 		try {
-			findByPhoneNo.setString(1, phoneno);
+			findByPhoneNo.setString(1, phoneNo);
 			ResultSet rs = findByPhoneNo.executeQuery();
+			
 		
-			Customer c = null;
-			if(rs.next() && (rs.getString("cvr") == "null")) {
-				c = buildPrivateCustomerObject(rs); }
-			else {
-				c = buildClubObject(rs);
+			while(rs.next()) {
+				if((rs.getString("cvr") == null)) {
+					c = buildPrivateCustomerObject(rs); }
+				else {
+					c = buildClubObject(rs);
+				}
 			}
-			return c;
+			
+			
 		} catch (SQLException e) {
-			throw new DataAccessException(e, "Could not find by Phonenumber = " + phoneno);
+			throw new DataAccessException(e, "Could not find by Phonenumber = " + phoneNo);
 		}
+		return c;
 	}
 	
 
@@ -90,32 +92,65 @@ public class CustomerDB implements CustomerDBIF{
 	}
 
 	private PrivateCustomer buildPrivateCustomerObject(ResultSet rs) throws SQLException {
-		PrivateCustomer pc = new PrivateCustomer(
-				rs.getInt("customerId"),
-				rs.getString("name"),
-				rs.getString("adress"),
-				rs.getInt("zipCode"),
-				rs.getString("city"),
-				rs.getString("phoneno"), 
-				rs.getInt("cpr"));
+		
+		
+		
+		int id = rs.getInt("id");
+		String fName = rs.getString("fName");
+		String lName = rs.getString("lName");
+		String name = fName + " " + lName;
+		String address = rs.getString("address");
+		int zipCode = rs.getInt("zipCode");
+		String phoneNo = rs.getString("phoneNo");
+		String cpr = rs.getString("cpr");
+		
+			
+		
+		
+		
+		
+		getCity.setInt(1, zipCode);
+		rs = getCity.executeQuery();
+		
+		String city = null;
+		
+		if(rs.next()) {
+			city = rs.getString("city");
+		}
+		
+		
+		PrivateCustomer pc = new PrivateCustomer(id, name, address, zipCode, city, phoneNo, cpr);
 				
-					
-				;
 		return pc;
 	}
 	
 	private Club buildClubObject(ResultSet rs) throws SQLException {
-		Club clb = new Club(
-				rs.getInt("customerId"),
-				rs.getString("name"),
-				rs.getString("adress"),
-				rs.getInt("zipCode"),
-				rs.getString("city"),
-				rs.getString("phoneno"), 
-				rs.getInt("cvr"));
+		int id = rs.getInt("id");
+		String fName = rs.getString("fName");
+		String lName = rs.getString("lName");
+		String name = fName + " " + lName;
+		String address = rs.getString("address");
+		int zipCode = rs.getInt("zipCode");
+		String phoneNo = rs.getString("phoneNo");
+		String cvr = rs.getString("cvr");
+		
+			
+		
+		
+		
+		
+		getCity.setInt(1, zipCode);
+		rs = getCity.executeQuery();
+		
+		String city = null;
+		
+		if(rs.next()) {
+			city = rs.getString("city");
+		}
+		
+		
+		Club clb = new Club(id, name, address, zipCode, city, phoneNo, cvr);
 				
-					
-				;
 		return clb;
 	}
 

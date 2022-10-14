@@ -13,6 +13,8 @@ import javax.swing.table.TableColumn;
 
 import ctrl.OrderCtrl;
 import db.DataAccessException;
+//import gui.CreateOrder;
+import model.Customer;
 
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -25,17 +27,20 @@ import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.DropMode;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.Box;
 
 public class MainMenu extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField txtCustomerPhone;
+	private JTextField txtQuantity;
+	private JTextField txtProductid;
 	
-	private OrderCtrl oc;
+	private OrderCtrl oCtrl;
+	private DefaultTableModel modelCustomer;
+	private DefaultTableModel modelProduct;
 
 	/**non ui
 	 * Fields
@@ -104,16 +109,21 @@ public class MainMenu extends JFrame {
 		Box horizontalBox = Box.createHorizontalBox();
 		panel_1.add(horizontalBox);
 		
-		textField = new JTextField();
-		textField.setAlignmentX(Component.LEFT_ALIGNMENT);
-		textField.setText("tlf...");
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField.setColumns(10);
-		horizontalBox.add(textField);
+		txtCustomerPhone = new JTextField();
+		txtCustomerPhone.setAlignmentX(Component.LEFT_ALIGNMENT);
+		txtCustomerPhone.setText("+45 11111111");
+		txtCustomerPhone.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtCustomerPhone.setColumns(10);
+		horizontalBox.add(txtCustomerPhone);
 		
-		JButton btnNewButton = new JButton("S\u00F8g");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		horizontalBox.add(btnNewButton);
+		JButton btnSearchCustomer = new JButton("S\u00F8g");
+		btnSearchCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addCustomerByPhoneNo();
+			}
+		});
+		btnSearchCustomer.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		horizontalBox.add(btnSearchCustomer);
 		
 		JPanel panel_9_listview = new JPanel();
 		splitPane_4.setRightComponent(panel_9_listview);
@@ -141,21 +151,26 @@ public class MainMenu extends JFrame {
 		Box horizontalBox_1 = Box.createHorizontalBox();
 		panel_7.add(horizontalBox_1);
 		
-		textField_2 = new JTextField();
-		textField_2.setText("Serienummer");
-		textField_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_2.setColumns(10);
-		horizontalBox_1.add(textField_2);
+		txtProductid = new JTextField();
+		txtProductid.setText("ProductId");
+		txtProductid.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtProductid.setColumns(10);
+		horizontalBox_1.add(txtProductid);
 		
-		textField_1 = new JTextField();
-		textField_1.setText("Quantity");
-		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_1.setColumns(10);
-		horizontalBox_1.add(textField_1);
+		txtQuantity = new JTextField();
+		txtQuantity.setText("Quantity");
+		txtQuantity.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtQuantity.setColumns(10);
+		horizontalBox_1.add(txtQuantity);
 		
-		JButton btnNewButton_4 = new JButton("S\u00F8g");
-		btnNewButton_4.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		horizontalBox_1.add(btnNewButton_4);
+		JButton btnSearchProduct = new JButton("S\u00F8g");
+		btnSearchProduct.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		horizontalBox_1.add(btnSearchProduct);
+		btnSearchProduct.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addProductByProductId();
+			}
+		});
 		
 		JPanel panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.SOUTH);
@@ -175,17 +190,23 @@ public class MainMenu extends JFrame {
 		JPanel panel_4 = new JPanel();
 		panel_2.add(panel_4);
 		
-		JButton btnNewButton_1 = new JButton("Afslut");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		JButton btnAfslut = new JButton("Afslut");
+		btnAfslut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				finishOrder();
 			}
 		});
-		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		panel_4.add(btnNewButton_1);
+		btnAfslut.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panel_4.add(btnAfslut);
 		
-		JButton btnNewButton_2 = new JButton("Annuller");
-		btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		panel_4.add(btnNewButton_2);
+		JButton btnCancel = new JButton("Annuller");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//ShutDown
+			}
+		});
+		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panel_4.add(btnCancel);
 		
 		
 		
@@ -204,47 +225,66 @@ public class MainMenu extends JFrame {
 		 * /
 		 */
 		
-		DefaultTableModel model = new DefaultTableModel();
+		modelCustomer = new DefaultTableModel();
 		panel_9_listview.setLayout(new BorderLayout(0, 0));
-		JTable table = new JTable(model);
+		JTable table = new JTable(modelCustomer);
 		panel_9_listview.add(new JScrollPane(table));
 		
-		model.addColumn("Navn");
-		model.addColumn("Adresse");
-		model.addColumn("Postnummer");
-		model.addColumn("By");
-		model.addColumn("Tlf");
+		modelCustomer.addColumn("Id");
+		modelCustomer.addColumn("Navn");
+		modelCustomer.addColumn("Adresse");
+		modelCustomer.addColumn("Postnummer");
+		modelCustomer.addColumn("By");
+		modelCustomer.addColumn("Tlf");
 		
 		//Test
-		model.addRow(new Object[] {"Uuh", "Uuuh", "Uuuuh", "Uuuuuuuh", "Uuh det kan jeg ikke huske"});
+		modelCustomer.addRow(new Object[] {"Uuh", "Uuuh", "Uuuuh", "Uuuuuuuh", "Uuh det kan jeg ikke huske"});
 		//Remove later
 		
-		/*
-		 * Ordre oplysninger table
-		 * 
-		 */
-		DefaultTableModel model2 = new DefaultTableModel();
+		modelProduct = new DefaultTableModel();
 		panel_6.setLayout(new BorderLayout(0, 0));
-		JTable table2 = new JTable(model2);
+		JTable table2 = new JTable(modelProduct);
 		JScrollPane scrollPane = new JScrollPane(table2);
 		panel_6.add(scrollPane);
-		model2.addColumn("1");
-		model2.addColumn("2");
-		model2.addColumn("3");
-		model2.addColumn("4");
-		model2.addColumn("5");
+		modelProduct.addColumn("1");
+		modelProduct.addColumn("2");
+		modelProduct.addColumn("3");
+		modelProduct.addColumn("4");
+		modelProduct.addColumn("5");
+		
+		try {
+			oCtrl = new OrderCtrl();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (DataAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		createOrder();
 		
 		
 	}
 	
 	private void createOrder() {
-	//Todo	
+		oCtrl.createNewOrder();
+		
 	}
 	private void addCustomerByPhoneNo() {
+		Customer c = null;
+		try {
+			c = oCtrl.addCustomerByPhoneNo(txtCustomerPhone.getText());
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		System.out.println(c.getCustomerId());
 		
+		modelCustomer.addRow(new Object[] {c.getCustomerId(), c.getName(), c.getAdress(), c.getZipCode(), c.getCity(), c.getPhoneno()});
 	}
-	private void addProductBySerialNo() {
+	private void addProductByProductId() {
 	//Todo
 	}
 	private void finishOrder() {
