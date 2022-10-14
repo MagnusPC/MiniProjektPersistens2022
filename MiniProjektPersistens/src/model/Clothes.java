@@ -6,9 +6,9 @@ public class Clothes extends Product {
 	private String size;
 	private String color;
 	
-	public Clothes(int id, String size, String color, int productID, String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
-		super(productID, name, purchasePrice, salePrice, rentPrice, productType, supplierID);
-		this.id = id; //TODO id skal stemme overens med product
+	public Clothes(String size, String color, String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
+		super(name, purchasePrice, salePrice, rentPrice, productType, supplierID);
+//		this.id = id; //TODO id skal stemme overens med product
 		this.size = size;
 		this.color = color;
 	}

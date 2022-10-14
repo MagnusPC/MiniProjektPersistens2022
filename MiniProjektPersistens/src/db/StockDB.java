@@ -17,13 +17,13 @@ public class StockDB implements StockDBIF{
 			
 			// Get the orderline's product serial number and quantity
 			int q = ol.getQuantity();
-			int pSN = ol.getProductId();
+			int pId = ol.getProductId();
 			
 			/*We have the serial number of the orderline's product, so now we execute a query 
 			 * to get the id of all the Stock tuples/rows connected to the product. We return
 			 * an ArrayList of these ids.
 			 */
-			String sqlQuery2 = ("select id from Stock where productSN = " + pSN);
+			String sqlQuery2 = ("select storageLocationId from Stock where productId = " + pId);
 			ArrayList<String> ids = processQueryReturnArrayList(sqlQuery2);
 			
 			/*
@@ -32,7 +32,7 @@ public class StockDB implements StockDBIF{
 			 */
 			ArrayList<String> quantities = new ArrayList<>();
 			for (int j = 0; j < ids.size(); j++) {
-				String sqlQuery3 = ("select quantity from Stock where id = " + ids.get(j));
+				String sqlQuery3 = ("select quantity from Stock where storageLocationId = " + ids.get(j) + " AND productId = " + pId);
 				quantities.add(processQueryReturnString(sqlQuery3));
 			}
 			
@@ -76,7 +76,7 @@ public class StockDB implements StockDBIF{
 					}
 					quant -= q;
 					
-					makeUpdateQuery(id, quant);
+					makeUpdateQuery(id, pId, quant);
 				}
 				
 				if (q > quant) {
@@ -91,7 +91,7 @@ public class StockDB implements StockDBIF{
 					quant = 0;
 					idAndQuantity.replace(id, "0");
 					
-					makeUpdateQuery(id, quant);
+					makeUpdateQuery(id, pId, quant);
 					
 			}
 		
@@ -105,7 +105,7 @@ public class StockDB implements StockDBIF{
 	
 	
 	
-	public void makeUpdateQuery(String id, int quant) {
+	public void makeUpdateQuery(String id, int productId, int quant) {
 		String updatedQuantity = "";
 		String sql = ("select minStock from Stock where id = " + id);
 		String minStock = processQueryReturnString(sql);
@@ -119,7 +119,7 @@ public class StockDB implements StockDBIF{
 			updatedQuantity = String.valueOf(quant);
 		}
 		
-		String finalQuery = ("update Stock set quantity = " + updatedQuantity + " where id = " + id);
+		String finalQuery = ("update Stock set quantity = " + updatedQuantity + " where storageLocationId = " + id + " AND productId = " + productId);
 		
 		processQueryUpdate(finalQuery);
 	}

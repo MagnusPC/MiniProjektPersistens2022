@@ -5,29 +5,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import model.GunReplica;
 import model.Product;
 
 public class ProductDB implements ProductDBIF {
-	//Default visibility, package protected
-	Connection con;
+	Connection con; //Default visibility, package protected
 	
-	//TODO lav join table - evt direkte i db
-	private static final String tableEach = "CREATE ; ";
-	//TODO udvælg hvilke kolonner der skal selectes
-	private static final String findByID_Q = "SELECT * FROM product p, gunreplica gr, equipment e, clothes c WHERE productID = ? AND (p.productID=gr.id OR p.productID=e.id OR p.productID=c.id); ";
+	//We find the product type
+	private static final String findProductTypeByID_Q = "SELECT productType FROM product WHERE productID = ? ; ";
+	//We join each subtable to their super
+	private static final String joinGunReplicaTable_Q = "SELECT * FROM Product, Gunreplica WHERE productID = ? ;";
+	private static final String joinEquipmentTable_Q = "SELECT * FROM Product, Equipment WHERE productID = ? ;";
+	private static final String joinClothesTable_Q = "SELECT * FROM Product, Clothes WHERE productID = ? ;";
 	
-	private PreparedStatement findByID;
+	private PreparedStatement findByID, joinGun, joinEquip, joinCloth;
 	
 	public ProductDB() throws DataAccessException {
 		con = DBConnection.getInstance().getConnection();
 		try {
-			findByID = con.prepareStatement(findByID_Q);
+			findByID = con.prepareStatement(findProductTypeByID_Q);
+			joinGun = con.prepareStatement(joinGunReplicaTable_Q);
+			joinEquip = con.prepareStatement(joinEquipmentTable_Q);
+			joinCloth = con.prepareStatement(joinClothesTable_Q);
 		}
 		catch(SQLException e) {
-			throw new DataAccessException(e, "Could not prepare statement");
+			throw new DataAccessException(e, "Could not prepare statements");
 		}
 	}
 	
+	@Override
 	public Product findProductByID(int productID) throws DataAccessException {
 		try {
 			findByID.setInt(1, productID);
@@ -39,30 +45,47 @@ public class ProductDB implements ProductDBIF {
 			return p;
 		}
 		catch (SQLException e) {
-			throw new DataAccessException(e, "Could not find prod by ID");
+			throw new DataAccessException(e, "Could not find product by ID");
 		}
 	}
 	
 	private Product buildObject(ResultSet rs) throws SQLException {
-		Product p = new Product(rs.getInt("productID"), 
-				rs.getString("name"),
-				rs.getDouble("purchasePrice"),
-				rs.getDouble("salePrice"),
-				rs.getDouble("rentPrice"),
-				rs.getString("productType"),
-				rs.getString("supplierID"),
-				/*GunReplica*/
-				rs.getString("caliber"),
-				rs.getString("material"),
-				/*Equipment*/
-				rs.getString("type"),
-				rs.getString("description"),
-				/*Clothes*/
-				rs.getString("size"),
-				rs.getString("color")
-				);
-		//TODO skal subklasser i et if/else
-		//Skal måske skrives som i update metoden i PersonDB
+		Product p = null;
+			if(rs.getString("productType")=="GunReplica") {
+				//We overwrite the resultset to create a new table
+				rs = joinGun.executeQuery();
+				//We add in the data
+				p = new GunReplica(rs.getString("caliber"),
+						rs.getString("material"),
+						rs.getString("name"),
+						rs.getDouble("purchasePrice"),
+						rs.getDouble("salePrice"),
+						rs.getDouble("rentPrice"),
+						rs.getString("productType"),
+						rs.getInt("supplierID"));
+			}
+			else if(rs.getString("productType")=="Equipment") {
+				rs = joinEquip.executeQuery();
+				p = new GunReplica(rs.getString("type"),
+						rs.getString("description"),
+						rs.getString("name"),
+						rs.getDouble("purchasePrice"),
+						rs.getDouble("salePrice"),
+						rs.getDouble("rentPrice"),
+						rs.getString("productType"),
+						rs.getInt("supplierID"));
+			}
+			else if(rs.getString("productType")=="Clothes") {
+				rs = joinCloth.executeQuery();
+				p = new GunReplica(rs.getString("size"),
+						rs.getString("color"),
+						rs.getString("name"),
+						rs.getDouble("purchasePrice"),
+						rs.getDouble("salePrice"),
+						rs.getDouble("rentPrice"),
+						rs.getString("productType"),
+						rs.getInt("supplierID"));
+			}
 		return p;
 	}
 }
