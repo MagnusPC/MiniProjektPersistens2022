@@ -22,9 +22,5 @@ public class CustomerCtrl {
 		
 	public Customer findCustomerByPhoneNo(String phoneno) throws DataAccessException {
 		return customerDB.findCustomerByPhoneNo(phoneno);
-		
-	
-	
-
-}
+	}
 }

@@ -269,6 +269,7 @@ public class MainMenu extends JFrame {
 	
 	private void createOrder() {
 		oCtrl.createNewOrder();
+		
 	}
 	private void addCustomerByPhoneNo() {
 		Customer c = null;

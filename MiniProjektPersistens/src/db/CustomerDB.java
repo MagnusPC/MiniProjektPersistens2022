@@ -13,23 +13,19 @@ import model.PrivateCustomer;
 
 public class CustomerDB implements CustomerDBIF{
 	
-	private static final String findAllQ =
-			"select, id name, adress, zipCode, city, phoneno";
-	private static final String findByPhonoNoQ =
-			findAllQ + " where phoneno = ?";
-	private static final String updateQ = 
-			"update persons set name = ?, adress = ?, zipCode = ? , city = ?, phoneno = ?";
+	private static final String findAllQ = "SELECT id, fname, lname, address, zipCode, phoneNo, cpr, cvr FROM Customer";
+	private static final String findByPhoneNoQ = findAllQ + " where phoneNo = '?'";
+	//private static final String updateQ = "update persons set name = ?, adress = ?, zipCode = ? , city = ?, phoneNo = ?";
 	
 	private PreparedStatement findAll, findByPhoneNo, update;
 	
 	public CustomerDB() throws DataAccessException {
 		try {
-			findAll = DBConnection.getInstance().getConnection()
-					.prepareStatement(findAllQ);
-			findByPhoneNo = DBConnection.getInstance().getConnection()
-					.prepareStatement(findByPhonoNoQ); 
-			update = DBConnection.getInstance().getConnection() 
-					.prepareStatement(updateQ);	
+			System.out.println("Fejl 1");
+			findAll = DBConnection.getInstance().getConnection().prepareStatement(findAllQ);
+			findByPhoneNo = DBConnection.getInstance().getConnection().prepareStatement(findByPhoneNoQ); 
+			System.out.println("Fejl 2");
+			//update = DBConnection.getInstance().getConnection().prepareStatement(updateQ);	
 		} catch (SQLException e) {
 			throw new DataAccessException(e, "Could not prepare statement");
 		}
@@ -48,21 +44,37 @@ public class CustomerDB implements CustomerDBIF{
 	}
 
 	@Override
-	public Customer findCustomerByPhoneNo(String phoneno) throws DataAccessException {
+	public Customer findCustomerByPhoneNo(String phoneNo) /*throws DataAccessException*/ {
+		Customer c = null;
 		try {
-			findByPhoneNo.setString(1, phoneno);
+			findByPhoneNo.setString(1, phoneNo);
+			System.out.println("Fejl 3");
 			ResultSet rs = findByPhoneNo.executeQuery();
+			System.out.println("Fejl 4");
 		
-			Customer c = null;
-			if(rs.next() && (rs.getString("cvr") == "null")) {
-				c = buildPrivateCustomerObject(rs); }
-			else {
-				c = buildClubObject(rs);
+			
+			while(rs.next()) {
+				System.out.println(rs.getString("fname"));
+				/*
+				if(rs.getInt("cvr") != 0) {
+					System.out.println("Fejl 3");
+					c = buildPrivateCustomerObject(rs); 
+					
+					}
+				else {
+					System.out.println("Fejl 4");
+					c = buildClubObject(rs);
+					
+				}
+				*/
 			}
-			return c;
+			
+			
 		} catch (SQLException e) {
-			throw new DataAccessException(e, "Could not find by Phonenumber = " + phoneno);
+			System.out.println(e);
+			//throw new DataAccessException(e, "Could not find by Phonenumber = " + phoneNo);
 		}
+		return c;
 	}
 	
 
@@ -72,7 +84,7 @@ public class CustomerDB implements CustomerDBIF{
 		final String adress = c.getAdress();
 		final int zipCode = c.getZipCode();
 		final String city = c.getCity();
-		final String phoneno = c.getPhoneno();
+		final String phoneNo = c.getPhoneno();
 		try {
 			//update person set 
 			//name = ?, email = ?, phone = ? , 
@@ -81,10 +93,10 @@ public class CustomerDB implements CustomerDBIF{
 			update.setString(2, adress);
 			update.setInt(3, zipCode);
 			update.setString(4, city);
-			update.setString(5, phoneno);
+			update.setString(5, phoneNo);
 			update.executeUpdate();
 		} catch (SQLException e) {
-			throw new DataAccessException(e, "Could not update person where Phonenumber = " + phoneno);
+			throw new DataAccessException(e, "Could not update person where Phonenumber = " + phoneNo);
 		}
 
 	}
