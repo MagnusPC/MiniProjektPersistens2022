@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import model.GunReplica;
 import model.Product;
 
 public class ProductDB implements ProductDBIF {
@@ -12,16 +13,17 @@ public class ProductDB implements ProductDBIF {
 	Connection con;
 	
 	//TODO lav join table - evt direkte i db
-	private static final String tableEach = "CREATE ; ";
+//	private static final String tableEach = "CREATE ; ";
 	//TODO udvælg hvilke kolonner der skal selectes
-	private static final String findByID_Q = "SELECT * FROM product p, gunreplica gr, equipment e, clothes c WHERE productID = ? AND (p.productID=gr.id OR p.productID=e.id OR p.productID=c.id); ";
+	private static final String findProductTypeByID_Q = "SELECT productType FROM product WHERE productID = ?; ";
+//	join tabeller
 	
 	private PreparedStatement findByID;
 	
 	public ProductDB() throws DataAccessException {
 		con = DBConnection.getInstance().getConnection();
 		try {
-			findByID = con.prepareStatement(findByID_Q);
+			findByID = con.prepareStatement(findProductIDByID_Q);
 		}
 		catch(SQLException e) {
 			throw new DataAccessException(e, "Could not prepare statement");
@@ -44,25 +46,35 @@ public class ProductDB implements ProductDBIF {
 	}
 	
 	private Product buildObject(ResultSet rs) throws SQLException {
-		Product p = new Product(rs.getInt("productID"), 
-				rs.getString("name"),
-				rs.getDouble("purchasePrice"),
-				rs.getDouble("salePrice"),
-				rs.getDouble("rentPrice"),
-				rs.getString("productType"),
-				rs.getString("supplierID"),
-				/*GunReplica*/
-				rs.getString("caliber"),
-				rs.getString("material"),
-				/*Equipment*/
-				rs.getString("type"),
-				rs.getString("description"),
-				/*Clothes*/
-				rs.getString("size"),
-				rs.getString("color")
-				);
-		//TODO skal subklasser i et if/else
-		//Skal måske skrives som i update metoden i PersonDB
+		Product p = null;
+//		Product p = new Product(rs.getInt("productID"), 
+//				rs.getString("name"),
+//				rs.getDouble("purchasePrice"),
+//				rs.getDouble("salePrice"),
+//				rs.getDouble("rentPrice"),
+//				rs.getString("productType"),
+//				rs.getString("supplierID"));
+			if(rs.getString("productType")=="GunReplica") {
+				p = new GunReplica(rs.getString("caliber"),
+						rs.getString("material"),
+						rs.getString("name"),
+						rs.getDouble("purchasePrice"),
+						rs.getDouble("salePrice"),
+						rs.getDouble("rentPrice"),
+						rs.getString("productType"),
+						rs.getInt("supplierID"));
+			}
+			else if(rs.getString("productType")=="Equipment") {
+				p = new GunReplica(rs.getString("type"),
+						rs.getString("description"),
+						rs.getString("name"),
+						rs.getDouble("purchasePrice"),
+						rs.getDouble("salePrice"),
+						rs.getDouble("rentPrice"),
+						rs.getString("productType"),
+						rs.getInt("supplierID"));
+			}
+			else if
 		return p;
 	}
 }

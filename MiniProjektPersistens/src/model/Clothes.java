@@ -8,7 +8,7 @@ public class Clothes extends Product {
 	
 	public Clothes(int id, String size, String color, int productID, String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
 		super(productID, name, purchasePrice, salePrice, rentPrice, productType, supplierID);
-		this.id = id; //TODO id skal stemme overens med product
+//		this.id = id; //TODO id skal stemme overens med product
 		this.size = size;
 		this.color = color;
 	}
