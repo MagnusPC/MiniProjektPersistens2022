@@ -10,8 +10,8 @@ import model.Order;
 
 public class OrderDB implements OrderDBIF{
 
-	private static final String insertOrderQ = "insert into [Order] values(?, ?, ?, ?, ?, ?)";
-	private static final String selectTopOrderIdQ = "select MAX(orderId) from Order ";
+	private static final String insertOrderQ = "INSERT INTO [Order] values(?, ?, ?, ?, ?, ?)";
+	private static final String selectTopOrderIdQ = "SELECT MAX(orderId) from Order ";
 	
 	private PreparedStatement insertOrder;
 	private PreparedStatement selectTopOrderId;
