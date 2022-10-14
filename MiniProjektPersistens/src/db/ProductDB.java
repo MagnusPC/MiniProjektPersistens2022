@@ -52,6 +52,9 @@ public class ProductDB implements ProductDBIF {
 	private Product buildObject(ResultSet rs) throws SQLException {
 		Product p = null;
 			if(rs.getString("productType")=="GunReplica") {
+				//We overwrite the resultset to create a new table
+				rs = joinGun.executeQuery();
+				//We add in the data
 				p = new GunReplica(rs.getString("caliber"),
 						rs.getString("material"),
 						rs.getString("name"),
@@ -62,6 +65,7 @@ public class ProductDB implements ProductDBIF {
 						rs.getInt("supplierID"));
 			}
 			else if(rs.getString("productType")=="Equipment") {
+				rs = joinEquip.executeQuery();
 				p = new GunReplica(rs.getString("type"),
 						rs.getString("description"),
 						rs.getString("name"),
@@ -72,6 +76,7 @@ public class ProductDB implements ProductDBIF {
 						rs.getInt("supplierID"));
 			}
 			else if(rs.getString("productType")=="Clothes") {
+				rs = joinCloth.executeQuery();
 				p = new GunReplica(rs.getString("size"),
 						rs.getString("color"),
 						rs.getString("name"),
