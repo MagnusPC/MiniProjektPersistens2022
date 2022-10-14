@@ -6,7 +6,7 @@ public class Clothes extends Product {
 	private String size;
 	private String color;
 	
-	public Clothes(String size, String color, int productID, String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
+	public Clothes(String size, String color, int productID, String name, float purchasePrice, float salePrice, float rentPrice, String productType, int supplierID) {
 		super(productID, name, purchasePrice, salePrice, rentPrice, productType, supplierID);
 //		this.id = id; //TODO id skal stemme overens med product
 		this.size = size;

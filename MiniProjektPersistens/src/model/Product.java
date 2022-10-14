@@ -6,13 +6,13 @@ public abstract class Product {
 	
 	private int productID;
 	private String name;
-	private double purchasePrice;
-	private double salePrice;
-	private double rentPrice;
+	private float purchasePrice;
+	private float salePrice;
+	private float rentPrice;
 	private String productType;
 	private int supplierID;
 
-	public Product(int productID, String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
+	public Product(int productID, String name, float purchasePrice, float salePrice, float rentPrice, String productType, int supplierID) {
 		this.productID = productID;
 		this.name = name;
 		this.purchasePrice = purchasePrice;
@@ -50,7 +50,7 @@ public abstract class Product {
 	/**
 	 * @param purchasePrice the purchasePrice to set
 	 */
-	public void setPurchasePrice(double purchasePrice) {
+	public void setPurchasePrice(float purchasePrice) {
 		this.purchasePrice = purchasePrice;
 	}
 
@@ -64,7 +64,7 @@ public abstract class Product {
 	/**
 	 * @param salePrice the salePrice to set
 	 */
-	public void setSalePrice(double salePrice) {
+	public void setSalePrice(float salePrice) {
 		this.salePrice = salePrice;
 	}
 
@@ -78,7 +78,7 @@ public abstract class Product {
 	/**
 	 * @param rentPrice the rentPrice to set
 	 */
-	public void setRentPrice(double rentPrice) {
+	public void setRentPrice(float rentPrice) {
 		this.rentPrice = rentPrice;
 	}
 

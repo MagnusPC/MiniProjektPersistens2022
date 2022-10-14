@@ -6,7 +6,7 @@ public class GunReplica extends Product {
 	private String caliber;
 	private String material;
 	
-	public GunReplica(String caliber, String material, int productID, String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
+	public GunReplica(String caliber, String material, int productID, String name, float purchasePrice, float salePrice, float rentPrice, String productType, int supplierID) {
 		super(productID, name, purchasePrice, salePrice, rentPrice, productType, supplierID);
 //		this.id = id; //TODO id skal stemme overens med product
 		this.caliber = caliber;

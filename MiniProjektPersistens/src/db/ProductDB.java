@@ -59,9 +59,9 @@ public class ProductDB implements ProductDBIF {
 						rs.getString("material"),
 						rs.getInt("productID"),
 						rs.getString("name"),
-						rs.getDouble("purchasePrice"),
-						rs.getDouble("salePrice"),
-						rs.getDouble("rentPrice"),
+						rs.getFloat("purchasePrice"),
+						rs.getFloat("salePrice"),
+						rs.getFloat("rentPrice"),
 						rs.getString("productType"),
 						rs.getInt("supplierID"));
 			}
@@ -71,9 +71,9 @@ public class ProductDB implements ProductDBIF {
 						rs.getString("description"),
 						rs.getInt("productID"),
 						rs.getString("name"),
-						rs.getDouble("purchasePrice"),
-						rs.getDouble("salePrice"),
-						rs.getDouble("rentPrice"),
+						rs.getFloat("purchasePrice"),
+						rs.getFloat("salePrice"),
+						rs.getFloat("rentPrice"),
 						rs.getString("productType"),
 						rs.getInt("supplierID"));
 			}
@@ -83,9 +83,9 @@ public class ProductDB implements ProductDBIF {
 						rs.getString("color"),
 						rs.getInt("productID"),
 						rs.getString("name"),
-						rs.getDouble("purchasePrice"),
-						rs.getDouble("salePrice"),
-						rs.getDouble("rentPrice"),
+						rs.getFloat("purchasePrice"),
+						rs.getFloat("salePrice"),
+						rs.getFloat("rentPrice"),
 						rs.getString("productType"),
 						rs.getInt("supplierID"));
 			}
