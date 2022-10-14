@@ -10,7 +10,7 @@ public class ProductCtrl {
 	
 	
 	
-	public Product findProductByID(int productId) {
+	public Product findProductByProductId(int productId) {
 		Product result = null;
 		try {
 			result = productDB.findProductByID(productId);

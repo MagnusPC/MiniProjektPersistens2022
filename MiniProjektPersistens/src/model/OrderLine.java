@@ -10,7 +10,7 @@ public class OrderLine {
 	public OrderLine(Product p, int quantity) {
 		productId = p.getProductID();
 		this.quantity = quantity;
-		soldPrice = calculateSubtotal(p);
+		soldPrice = (quantity * calculateSubtotal(p));
 	
 	}
 
