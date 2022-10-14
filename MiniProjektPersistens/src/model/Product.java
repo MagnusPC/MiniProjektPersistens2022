@@ -43,7 +43,7 @@ public abstract class Product {
 	/**
 	 * @return the purchasePrice
 	 */
-	public double getPurchasePrice() {
+	public float getPurchasePrice() {
 		return purchasePrice;
 	}
 
@@ -57,7 +57,7 @@ public abstract class Product {
 	/**
 	 * @return the salePrice
 	 */
-	public double getSalePrice() {
+	public float getSalePrice() {
 		return salePrice;
 	}
 
@@ -71,7 +71,7 @@ public abstract class Product {
 	/**
 	 * @return the rentPrice
 	 */
-	public double getRentPrice() {
+	public float getRentPrice() {
 		return rentPrice;
 	}
 
