@@ -147,11 +147,33 @@ public class Order {
 	 */
 	
 	public Invoice addInvoiceToOrder(Invoice invoice) {
+		double totalSalePrice = calculateTotal();
+		invoice.setInvoiceAmount(totalSalePrice);
 		this.invoice = invoice;
 		
 		return this.invoice;
 	}
 	
+	private double calculateTotal() {
+		double result = 0;
+		
+		for (OrderLine orderLine : orderLines) {
+			result += orderLine.getSoldPrice();
+		}
+		
+		if(customer.getClass().equals(Club.class) && result >= 1500) {
+			result = result * 0.85;
+		}
+		else if(customer.getClass().equals(PrivateCustomer.class) && result <= 2500) {
+			result =+ 45;
+		}
+		
+		
+		return result;
+	}
+
+
+
 	/**
 	 * Sets deliveryStatus, date and deliveryDate
 	 */
