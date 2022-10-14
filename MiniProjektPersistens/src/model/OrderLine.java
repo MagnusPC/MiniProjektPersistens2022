@@ -2,7 +2,6 @@ package model;
 
 public class OrderLine {
 	
-	private int orderId;
 	private int productId;
 	private float soldPrice;
 	private int quantity;
@@ -30,13 +29,5 @@ public class OrderLine {
 	
 	public float getSoldPrice() {
 		return soldPrice;
-	}
-	
-	public int getOrderId() {
-		return orderId;
-	}
-	
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
 	}
 }
