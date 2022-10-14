@@ -185,9 +185,10 @@ public class Order {
 	 * Sets deliveryStatus, date and deliveryDate
 	 */
 	
-	public Order finishOrder() {
+	public void finishOrder() {
 		setDeliveryStatus("In Transit");
 		setDate(LocalDate.now());
 		setDeliveryDate(getDate().plusDays(3));
+		
 	}
 }

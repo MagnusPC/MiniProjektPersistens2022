@@ -38,7 +38,7 @@ public class InvoiceDB implements InvoiceDBIF{
 	}
 	
 	@Override
-	public Invoice insert(Invoice invoice) throws DataAccessException {
+	public Invoice addInvoice(Invoice invoice) throws DataAccessException {
 		
 			try {
 				insertPS.setInt(1, invoice.getInvoiceNo());

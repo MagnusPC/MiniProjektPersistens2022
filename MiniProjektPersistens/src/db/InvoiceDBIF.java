@@ -5,5 +5,5 @@ import model.Invoice;
 public interface InvoiceDBIF {
 
 	
-	Invoice insert(Invoice invoice) throws DataAccessException;
+	Invoice addInvoice(Invoice invoice) throws DataAccessException;
 }

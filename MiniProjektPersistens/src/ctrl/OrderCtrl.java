@@ -27,7 +27,7 @@ public class OrderCtrl {
 	private DBConnection dbCon;
 	private Order newOrder;
 	
-	public OrderCtrl() throws SQLException {
+	public OrderCtrl() throws SQLException, DataAccessException {
 		pCtrl = new ProductCtrl();
 		cCtrl = new CustomerCtrl();
 		orderLineDB = new OrderLineDB();
@@ -44,7 +44,7 @@ public class OrderCtrl {
 	public Customer addCustomerByPhoneNo(String phone) throws DataAccessException {
 		Customer c = null;
 		c = cCtrl.findCustomerByPhoneNo(phone);
-		//newOrder.addCustomer(c);
+		newOrder.addCustomer(c);
 		
 		return c;
 	}
@@ -64,16 +64,24 @@ public class OrderCtrl {
 		return invoice;
 	}
 	
-	public Order finishOrder() {
+	public Order finishOrder() throws DataAccessException {
 		newOrder.finishOrder();
-		dbCon.startTransaction();
 		
-		invoiceDB.addInvoice(newOrder.getInvoice());
-		orderDB.insertOrder(newOrder);
-		orderLineDB.insertOrderLines(newOrder.getOrderLines(), newOrder.getOrderId());
-		pCtrl.updateStock(newOrder);
+		try {
+			dbCon.startTransaction();
+			
+			invoiceDB.addInvoice(newOrder.getInvoice());
+			orderDB.insertOrder(newOrder);
+			orderLineDB.insertOrderLines(newOrder.getOrderLines(), newOrder.getOrderId());
+			pCtrl.updateStock(newOrder);
+			
+			dbCon.commitTransaction();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		dbCon.commitTransaction();
+		
 		
 		return newOrder;
 	}
