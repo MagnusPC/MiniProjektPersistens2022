@@ -75,7 +75,7 @@ public class StockDB implements StockDBIF{
 						}
 					}
 					quant -= q;
-					
+					q = 0;
 					makeUpdateQuery(id, pId, quant);
 				}
 				
@@ -107,9 +107,9 @@ public class StockDB implements StockDBIF{
 	
 	private void makeUpdateQuery(String id, int productId, int quant) {
 		String updatedQuantity = "";
-		String sql = ("select minStock from Stock where id = " + id);
+		String sql = ("select minStock from Stock where storageLocationId = " + id + " AND productId = " + productId);
 		String minStock = processQueryReturnString(sql);
-		String sql2 = ("select maxStock from Stock where id = " + id);
+		String sql2 = ("select maxStock from Stock where storageLocationId = " + id + " AND productId =  " + productId);
 		String maxStock = processQueryReturnString(sql2);
 		
 		if (quant < Integer.parseInt(minStock)) {
@@ -152,7 +152,7 @@ public class StockDB implements StockDBIF{
 			stmt.executeQuery(query);
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+		    ;
 		}
 	}
 	
@@ -170,7 +170,7 @@ public class StockDB implements StockDBIF{
 			}
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+		    e.printStackTrace();
 		}
 		return string;
 	}
