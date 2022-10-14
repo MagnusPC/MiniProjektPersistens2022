@@ -12,18 +12,22 @@ public class ProductDB implements ProductDBIF {
 	//Default visibility, package protected
 	Connection con;
 	
-	//TODO lav join table - evt direkte i db
-//	private static final String tableEach = "CREATE ; ";
-	//TODO udvælg hvilke kolonner der skal selectes
-	private static final String findProductTypeByID_Q = "SELECT productType FROM product WHERE productID = ?; ";
-//	join tabeller
+	//We find the product type
+	private static final String findProductTypeByID_Q = "SELECT productType FROM product WHERE productID = ? ; ";
+	//We join each subtable to their super
+	private static final String joinGunReplicaTable_Q = "SELECT * FROM Product, Gunreplica WHERE productID = ? ;";
+	private static final String joinEquipmentTable_Q = "SELECT * FROM Product, Equipment WHERE productID = ? ;";
+	private static final String joinClothesTable_Q = "SELECT * FROM Product, Clothes WHERE productID = ? ;";
 	
-	private PreparedStatement findByID;
+	private PreparedStatement findByID, joinGun, joinEquip, joinCloth;
 	
 	public ProductDB() throws DataAccessException {
 		con = DBConnection.getInstance().getConnection();
 		try {
-			findByID = con.prepareStatement(findProductIDByID_Q);
+			findByID = con.prepareStatement(findProductTypeByID_Q);
+			joinGun = con.prepareStatement(joinGunReplicaTable_Q);
+			joinEquip = con.prepareStatement(joinEquipmentTable_Q);
+			joinCloth = con.prepareStatement(joinClothesTable_Q);
 		}
 		catch(SQLException e) {
 			throw new DataAccessException(e, "Could not prepare statement");
@@ -41,19 +45,12 @@ public class ProductDB implements ProductDBIF {
 			return p;
 		}
 		catch (SQLException e) {
-			throw new DataAccessException(e, "Could not find prod by ID");
+			throw new DataAccessException(e, "Could not find product by ID");
 		}
 	}
 	
 	private Product buildObject(ResultSet rs) throws SQLException {
 		Product p = null;
-//		Product p = new Product(rs.getInt("productID"), 
-//				rs.getString("name"),
-//				rs.getDouble("purchasePrice"),
-//				rs.getDouble("salePrice"),
-//				rs.getDouble("rentPrice"),
-//				rs.getString("productType"),
-//				rs.getString("supplierID"));
 			if(rs.getString("productType")=="GunReplica") {
 				p = new GunReplica(rs.getString("caliber"),
 						rs.getString("material"),
@@ -74,7 +71,16 @@ public class ProductDB implements ProductDBIF {
 						rs.getString("productType"),
 						rs.getInt("supplierID"));
 			}
-			else if
+			else if(rs.getString("productType")=="Clothes") {
+				p = new GunReplica(rs.getString("size"),
+						rs.getString("color"),
+						rs.getString("name"),
+						rs.getDouble("purchasePrice"),
+						rs.getDouble("salePrice"),
+						rs.getDouble("rentPrice"),
+						rs.getString("productType"),
+						rs.getInt("supplierID"));
+			}
 		return p;
 	}
 }
