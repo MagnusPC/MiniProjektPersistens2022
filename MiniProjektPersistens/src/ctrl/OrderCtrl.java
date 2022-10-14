@@ -3,6 +3,7 @@ package ctrl;
 import java.sql.Connection;
 
 import db.DBConnection;
+import db.DataAccessException;
 import db.InvoiceDB;
 import db.InvoiceDBIF;
 import db.OrderDB;
@@ -39,10 +40,10 @@ public class OrderCtrl {
 		newOrder = new Order();
 	}
 	
-	public Customer addCustomerByPhoneNo(String phone) {
+	public Customer addCustomerByPhoneNo(String phone) throws DataAccessException {
 		Customer c = null;
 		c = cCtrl.findCustomerByPhoneNo(phone);
-		newOrder.addCustomer(c);
+		//newOrder.addCustomer(c);
 		
 		return c;
 	}

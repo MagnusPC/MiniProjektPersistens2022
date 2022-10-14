@@ -11,6 +11,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import ctrl.OrderCtrl;
+import db.DataAccessException;
+
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
@@ -31,6 +34,8 @@ public class MainMenu extends JFrame {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
+	
+	private OrderCtrl oc;
 
 	/**non ui
 	 * Fields
@@ -236,7 +241,8 @@ public class MainMenu extends JFrame {
 	//Todo	
 	}
 	private void addCustomerByPhoneNo() {
-	//Todo
+		
+		
 	}
 	private void addProductBySerialNo() {
 	//Todo

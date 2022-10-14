@@ -14,9 +14,10 @@ public class CustomerCtrl {
 	
 	public List<Customer> findAll() throws DataAccessException {
 		return customerDB.findAll();
+	}
 		
-	public Customer findById(String phoneno) throws DataAccessException {
-		return customerDB.findByPhoneNo(phoneno);
+	public Customer findCustomerByPhoneNo(String phoneno) throws DataAccessException {
+		return customerDB.findCustomerByPhoneNo(phoneno);
 		
 	
 	
