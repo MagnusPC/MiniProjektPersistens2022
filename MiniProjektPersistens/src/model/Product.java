@@ -4,16 +4,16 @@ package model;
 
 public abstract class Product {
 	
-//	private int productID;
+	private int productID;
 	private String name;
-	private double purchasePrice;
-	private double salePrice;
-	private double rentPrice;
+	private float purchasePrice;
+	private float salePrice;
+	private float rentPrice;
 	private String productType;
 	private int supplierID;
 
-	public Product(String name, double purchasePrice, double salePrice, double rentPrice, String productType, int supplierID) {
-		//this.productID = productID;
+	public Product(int productID, String name, float purchasePrice, float salePrice, float rentPrice, String productType, int supplierID) {
+		this.productID = productID;
 		this.name = name;
 		this.purchasePrice = purchasePrice;
 		this.salePrice = salePrice;
@@ -22,9 +22,9 @@ public abstract class Product {
 		this.supplierID = supplierID;
 	}
 	
-//	public int getProductID() {
-//		return productID;
-//	} TODO hent prod id fra db
+	public int getProductID() {
+		return productID;
+	}
 	
 	/**
 	 * @return the name
@@ -43,42 +43,42 @@ public abstract class Product {
 	/**
 	 * @return the purchasePrice
 	 */
-	public double getPurchasePrice() {
+	public float getPurchasePrice() {
 		return purchasePrice;
 	}
 
 	/**
 	 * @param purchasePrice the purchasePrice to set
 	 */
-	public void setPurchasePrice(double purchasePrice) {
+	public void setPurchasePrice(float purchasePrice) {
 		this.purchasePrice = purchasePrice;
 	}
 
 	/**
 	 * @return the salePrice
 	 */
-	public double getSalePrice() {
+	public float getSalePrice() {
 		return salePrice;
 	}
 
 	/**
 	 * @param salePrice the salePrice to set
 	 */
-	public void setSalePrice(double salePrice) {
+	public void setSalePrice(float salePrice) {
 		this.salePrice = salePrice;
 	}
 
 	/**
 	 * @return the rentPrice
 	 */
-	public double getRentPrice() {
+	public float getRentPrice() {
 		return rentPrice;
 	}
 
 	/**
 	 * @param rentPrice the rentPrice to set
 	 */
-	public void setRentPrice(double rentPrice) {
+	public void setRentPrice(float rentPrice) {
 		this.rentPrice = rentPrice;
 	}
 

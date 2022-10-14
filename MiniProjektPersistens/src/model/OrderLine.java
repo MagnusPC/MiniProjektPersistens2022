@@ -2,25 +2,41 @@ package model;
 
 public class OrderLine {
 	
-	private int id;
 	private int orderId;
 	private int productId;
 	private float soldPrice;
 	private int quantity;
 	
-	public OrderLine(int id, int orderId, int productId, float soldPrice, int quantity) {
-		this.id = id;
-		this.orderId = orderId;
-		this.productId = productId;
-		this.soldPrice = soldPrice;
+	public OrderLine(Product p, int quantity) {
+		productId = p.getProductID();
 		this.quantity = quantity;
+		soldPrice = calculateSubtotal(p);
+	
 	}
 
+	public float calculateSubtotal(Product p) {
+		return p.getSalePrice();
+	}
+	
+	
+	
 	public int getQuantity() {
 		return quantity;
 	}
 	
 	public int getProductId() {
 		return productId;
+	}
+	
+	public float getSoldPrice() {
+		return soldPrice;
+	}
+	
+	public int getOrderId() {
+		return orderId;
+	}
+	
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
 	}
 }

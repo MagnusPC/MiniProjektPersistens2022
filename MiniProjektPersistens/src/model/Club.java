@@ -4,8 +4,8 @@ public class Club extends Customer {
 
 	private int cvr;
 
-	public Club(String name, String adress, int zipCode, String city, String phoneno, int cvr) {
-		super(name, adress, zipCode, city, phoneno);
+	public Club(int customerId, String name, String adress, int zipCode, String city, String phoneno, int cvr) {
+		super(customerId, name, adress, zipCode, city, phoneno);
 		this.setCvr(cvr);
 	}
 

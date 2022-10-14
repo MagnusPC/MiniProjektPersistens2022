@@ -57,10 +57,11 @@ public class ProductDB implements ProductDBIF {
 				//We add in the data
 				p = new GunReplica(rs.getString("caliber"),
 						rs.getString("material"),
+						rs.getInt("productID"),
 						rs.getString("name"),
-						rs.getDouble("purchasePrice"),
-						rs.getDouble("salePrice"),
-						rs.getDouble("rentPrice"),
+						rs.getFloat("purchasePrice"),
+						rs.getFloat("salePrice"),
+						rs.getFloat("rentPrice"),
 						rs.getString("productType"),
 						rs.getInt("supplierID"));
 			}
@@ -68,10 +69,11 @@ public class ProductDB implements ProductDBIF {
 				rs = joinEquip.executeQuery();
 				p = new GunReplica(rs.getString("type"),
 						rs.getString("description"),
+						rs.getInt("productID"),
 						rs.getString("name"),
-						rs.getDouble("purchasePrice"),
-						rs.getDouble("salePrice"),
-						rs.getDouble("rentPrice"),
+						rs.getFloat("purchasePrice"),
+						rs.getFloat("salePrice"),
+						rs.getFloat("rentPrice"),
 						rs.getString("productType"),
 						rs.getInt("supplierID"));
 			}
@@ -79,10 +81,11 @@ public class ProductDB implements ProductDBIF {
 				rs = joinCloth.executeQuery();
 				p = new GunReplica(rs.getString("size"),
 						rs.getString("color"),
+						rs.getInt("productID"),
 						rs.getString("name"),
-						rs.getDouble("purchasePrice"),
-						rs.getDouble("salePrice"),
-						rs.getDouble("rentPrice"),
+						rs.getFloat("purchasePrice"),
+						rs.getFloat("salePrice"),
+						rs.getFloat("rentPrice"),
 						rs.getString("productType"),
 						rs.getInt("supplierID"));
 			}

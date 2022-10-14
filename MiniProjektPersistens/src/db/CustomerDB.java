@@ -6,17 +6,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Club;
 import model.Customer;
+import model.PrivateCustomer;
 
 
 public class CustomerDB implements CustomerDBIF{
 	
 	private static final String findAllQ =
-			"select name, adress, zipCode, city, phoneno";
+			"select, id name, adress, zipCode, city, phoneno";
 	private static final String findByPhonoNoQ =
 			findAllQ + " where phoneno = ?";
 	private static final String updateQ = 
 			"update persons set name = ?, adress = ?, zipCode = ? , city = ?, phoneno = ?";
+	
 	private PreparedStatement findAll, findByPhoneNo, update;
 	
 	public CustomerDB() throws DataAccessException {
@@ -45,13 +48,16 @@ public class CustomerDB implements CustomerDBIF{
 	}
 
 	@Override
-	public Customer findByPhoneNo(String phoneno) throws DataAccessException {
+	public Customer findCustomerByPhoneNo(String phoneno) throws DataAccessException {
 		try {
 			findByPhoneNo.setString(1, phoneno);
 			ResultSet rs = findByPhoneNo.executeQuery();
+		
 			Customer c = null;
-			if(rs.next()) {
-				c = buildObject(rs);
+			if(rs.next() && (rs.getString("cvr") == "null")) {
+				c = buildPrivateCustomerObject(rs); }
+			else {
+				c = buildClubObject(rs);
 			}
 			return c;
 		} catch (SQLException e) {
@@ -83,21 +89,43 @@ public class CustomerDB implements CustomerDBIF{
 
 	}
 
-	private Customer buildObject(ResultSet rs) throws SQLException {
-		Customer c = new Customer(
+	private PrivateCustomer buildPrivateCustomerObject(ResultSet rs) throws SQLException {
+		PrivateCustomer pc = new PrivateCustomer(
+				rs.getInt("customerId"),
 				rs.getString("name"),
 				rs.getString("adress"),
 				rs.getInt("zipCode"),
 				rs.getString("city"),
-				rs.getString("phoneno"))
+				rs.getString("phoneno"), 
+				rs.getInt("cpr"));
+				
+					
 				;
-		return c;
+		return pc;
+	}
+	
+	private Club buildClubObject(ResultSet rs) throws SQLException {
+		Club clb = new Club(
+				rs.getInt("customerId"),
+				rs.getString("name"),
+				rs.getString("adress"),
+				rs.getInt("zipCode"),
+				rs.getString("city"),
+				rs.getString("phoneno"), 
+				rs.getInt("cvr"));
+				
+					
+				;
+		return clb;
 	}
 
 	private List<Customer> buildObjects(ResultSet rs) throws SQLException {
 		List<Customer> res = new ArrayList<>();
 		while(rs.next()) {
-			res.add(buildObject(rs));
+			if (rs.getString("cvr") == "null") 
+				res.add(buildPrivateCustomerObject(rs));
+			else 
+				res.add(buildClubObject(rs));
 		}
 		return res;
 	}

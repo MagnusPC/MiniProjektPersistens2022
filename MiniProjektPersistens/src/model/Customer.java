@@ -1,7 +1,8 @@
 package model;
 
-public class Customer {
+public abstract class  Customer {
 
+		private int customerId;
 		private String name;
 		private String adress;
 		private int zipCode;
@@ -9,8 +10,8 @@ public class Customer {
 		private String phoneno;
 		
 		
-		public Customer(String name, String adress, int zipCode, String city, String phoneno) {
-			super();
+		public Customer(int customerId, String name, String adress, int zipCode, String city, String phoneno) {
+			this.customerId  = customerId;
 			this.name = name;
 			this.adress = adress;
 			this.zipCode = zipCode;
@@ -66,6 +67,16 @@ public class Customer {
 
 		public void setPhoneno(String phoneno) {
 			this.phoneno = phoneno;
+		}
+
+
+		public int getCustomerId() {
+			return customerId;
+		}
+
+
+		public void setCustomerId(int customerId) {
+			this.customerId = customerId;
 		}
 		
 		

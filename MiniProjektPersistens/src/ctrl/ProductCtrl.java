@@ -22,7 +22,12 @@ public class ProductCtrl {
 	
 	
 	public void updateStock(Order order) {
-		stockDB.updateStock(order);
+		try {
+			stockDB.updateStock(order);
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

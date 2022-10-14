@@ -9,8 +9,8 @@ import model.*;
 public class StockDB implements StockDBIF{
 
 	
-	
-	public void updateStock(Order order) {
+	@Override
+	public void updateStock(Order order) throws DataAccessException {
 		//First, we get the order's orderlines. We will do the rest of the method on all of them.
 		for (int i = 0; i < order.getOrderLines().size(); i++) {
 			OrderLine ol = order.getOrderLines().get(i);
@@ -105,7 +105,7 @@ public class StockDB implements StockDBIF{
 	
 	
 	
-	public void makeUpdateQuery(String id, int productId, int quant) {
+	private void makeUpdateQuery(String id, int productId, int quant) {
 		String updatedQuantity = "";
 		String sql = ("select minStock from Stock where id = " + id);
 		String minStock = processQueryReturnString(sql);
@@ -127,7 +127,7 @@ public class StockDB implements StockDBIF{
 	
 	
 	
-	public ArrayList<String> sortLargestToSmallest(ArrayList<String> values){
+	private ArrayList<String> sortLargestToSmallest(ArrayList<String> values){
 		ArrayList<String> sorted = new ArrayList<>();
 		ArrayList<String> unsorted = values;
 		String q = "0";
@@ -145,7 +145,7 @@ public class StockDB implements StockDBIF{
 	}
 	
 	
-	public void processQueryUpdate(String query) {
+	private void processQueryUpdate(String query) {
 		try {
 			Connection conn = DBConnection.getInstance().getConnection();
 			Statement stmt = conn.createStatement();
@@ -158,7 +158,7 @@ public class StockDB implements StockDBIF{
 	
 	
 	
-	public String processQueryReturnString(String query) {
+	private String processQueryReturnString(String query) {
 		String string = "";
 		try {
 			Connection conn = DBConnection.getInstance().getConnection();
@@ -177,7 +177,7 @@ public class StockDB implements StockDBIF{
 	
 	
 	
-	public ArrayList<String> processQueryReturnArrayList(String query) {
+	private ArrayList<String> processQueryReturnArrayList(String query) {
 		ArrayList<String> strings = new ArrayList<>();
 		try {
 			Connection conn = DBConnection.getInstance().getConnection();
