@@ -1,6 +1,7 @@
 package ctrl;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import db.DBConnection;
 import db.DataAccessException;
@@ -26,7 +27,7 @@ public class OrderCtrl {
 	private DBConnection dbCon;
 	private Order newOrder;
 	
-	public OrderCtrl() {
+	public OrderCtrl() throws SQLException {
 		pCtrl = new ProductCtrl();
 		cCtrl = new CustomerCtrl();
 		orderLineDB = new OrderLineDB();
