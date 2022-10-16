@@ -88,9 +88,12 @@ public class OrderCtrl {
 		    throw new DataAccessException(e, "Error could not finish order");
 		}
 		
-		
-		
 		return newOrder;
+	}
+	
+	//Only for test class
+	public OrderDBIF getOrderDB() {
+	    return orderDB;
 	}
 	
 
