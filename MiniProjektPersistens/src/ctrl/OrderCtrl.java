@@ -26,6 +26,7 @@ public class OrderCtrl {
 	private InvoiceDBIF invoiceDB;
 	private DBConnection dbCon;
 	private Order newOrder;
+    private OrderLine ol;
 	
 	public OrderCtrl() throws SQLException, DataAccessException {
 		pCtrl = new ProductCtrl();
@@ -34,6 +35,7 @@ public class OrderCtrl {
 		orderDB = new OrderDB();
 		invoiceDB = new InvoiceDB();
 		dbCon = DBConnection.getInstance();
+		ol = null;
 		
 	}
 	
@@ -51,7 +53,7 @@ public class OrderCtrl {
 	
 	public OrderLine addProductByProductId(int productId, int quantity) {
 		Product p = pCtrl.findProductByProductId(productId);
-		OrderLine ol = null;
+		ol = null;
 		if(quantity > 0) {
 		    ol = new OrderLine(p, quantity);
 		}
@@ -61,10 +63,12 @@ public class OrderCtrl {
 	}
 	
 	public Invoice addInvoice() {
-		Invoice invoice = new Invoice();
-		newOrder.addInvoiceToOrder(invoice);
-		
-		return invoice;
+	    Invoice invoice = null;
+	    if(ol!=null) {
+	        invoice = new Invoice();
+	        newOrder.addInvoiceToOrder(invoice);
+	    }
+	    return invoice;
 	}
 	
 	public Order finishOrder() throws DataAccessException {

@@ -197,9 +197,15 @@ public class MainMenu extends JFrame {
 		JButton btnAfslut = new JButton("Godkend");
 		btnAfslut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addInvoice();
-				finishOrder();
-				close(); //Temporary, a better solution is to whipe the table models in the ui
+				try {
+				    addInvoice();
+				    finishOrder();
+				    System.out.println("Order has been made");
+				    close();  //Temporary, a better solution is to whipe the table models in the ui
+                } catch (NullPointerException n1) {
+                    n1.printStackTrace();
+                    System.out.println("You must add atleast 1 product");
+                }
 			}
 		});
 		btnAfslut.setFont(new Font("Tahoma", Font.PLAIN, 16));

@@ -59,9 +59,8 @@ class TestFinishOrder {
         
 	}
 	
-	@Disabled
 	@Test
-	void testStockDoesNotUpdateWithoutProducts() throws DataAccessException {
+	void testStockDoesNotUpdateWithZeroProducts() throws DataAccessException {
 	    //arrange
 	    oCtrl.createNewOrder();
 	    //act
