@@ -55,7 +55,9 @@ class TestCalculateTotal {
 	    Order temp02 = oCtrl2.finishOrder();
 	    
 	    //ASSERT
-	    assertEquals(tempTotal, tempO1.getInvoice().getInvoiceAmount());
+	    //We check to see that the delivery price has been added
+	    assertEquals(tempTotal+45, tempO1.getInvoice().getInvoiceAmount());
+	    //We check to see that the delivery price has not been added
 	    assertEquals(299.99*9, temp02.getInvoice().getInvoiceAmount());
 	    
 	}
@@ -83,8 +85,10 @@ class TestCalculateTotal {
         Order temp02 = oCtrl2.finishOrder();
         
         //ASSERT
+        //We check to see that the discount has not been added
         assertEquals(299.99*4, tempO1.getInvoice().getInvoiceAmount());
-        assertEquals(299.99*6, temp02.getInvoice().getInvoiceAmount());
+        //We check to see that the discount has been added
+        assertEquals((299.99*6)*0.85, temp02.getInvoice().getInvoiceAmount());
 	}
 
 }
