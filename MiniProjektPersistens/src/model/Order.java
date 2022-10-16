@@ -179,7 +179,7 @@ public class Order {
 		if(customer.getClass().equals(Club.class) && result >= 1500) {
 			result = result * 0.85;
 		}
-		else if(customer.getClass().equals(PrivateCustomer.class) && result <= 2500 && result > 0) {
+		else if(customer.getClass().equals(PrivateCustomer.class) && (result <= 2500 && result > 0)) {
 			result += 45;
 		}
 		
