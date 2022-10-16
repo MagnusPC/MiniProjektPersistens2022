@@ -110,12 +110,12 @@ class TestCalculateTotal {
 	    oCtrl1.addCustomerByPhoneNo("+45 11111111");
 	    oCtrl1.addInvoice();
 	    //assert
-	    //ingen exception bliver kastet
-	    assertThrows(DataAccessException.class, () -> oCtrl1.finishOrder());
+	        //ingen exception bliver kastet
+//	        assertThrows(DataAccessException.class, () -> oCtrl1.finishOrder());
 	    //arrange
 	    Order tempO = oCtrl1.finishOrder();
 	    //assert
-	    //fejler da delivery price stadig tilføjes
+	    //TODO fejler da delivery price stadig tilføjes
 	    assertEquals(0, tempO.getInvoice().getInvoiceAmount());
 	}
 	

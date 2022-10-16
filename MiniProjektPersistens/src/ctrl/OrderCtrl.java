@@ -77,8 +77,8 @@ public class OrderCtrl {
 			
 			dbCon.commitTransaction();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//		    dbCon.rollbackTransaction();
+		    throw new DataAccessException(e, "Error could not finish order");
 		}
 		
 		
