@@ -65,7 +65,6 @@ class TestCalculateTotal {
         Order tempO = oCtrl1.finishOrder();
         //assert
         assertEquals(299.99*9, tempO.getInvoice().getInvoiceAmount(), 0.0001);
-	    
 	}
 	
 	@Test
