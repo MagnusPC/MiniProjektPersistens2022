@@ -83,7 +83,7 @@ class TestCalculateTotal {
         Order temp02 = oCtrl2.finishOrder();
         
         //ASSERT
-        assertEquals((299.99*4), tempO1.getInvoice().getInvoiceAmount());
+        assertEquals(299.99*4, tempO1.getInvoice().getInvoiceAmount());
         assertEquals(299.99*6, temp02.getInvoice().getInvoiceAmount());
 	}
 

@@ -180,7 +180,7 @@ public class Order {
 			result = result * 0.85;
 		}
 		else if(customer.getClass().equals(PrivateCustomer.class) && result <= 2500) {
-			result =+ 45;
+			result += 45;
 		}
 		
 		
