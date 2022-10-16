@@ -3,6 +3,7 @@ package ctrl;
 import java.util.List;
 
 import db.CustomerDB;
+import db.CustomerDBIF;
 import db.DataAccessException;
 import model.Customer;
 
@@ -10,7 +11,7 @@ import model.Customer;
 
 
 public class CustomerCtrl {
-	private CustomerDB customerDB;
+	private CustomerDBIF customerDB;
 	
 	public CustomerCtrl() throws DataAccessException {
 		customerDB = new CustomerDB();

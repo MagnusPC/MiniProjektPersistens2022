@@ -5,8 +5,8 @@ import model.*;
 
 public class ProductCtrl {
 
-	private ProductDB productDB;
-	private StockDB stockDB;
+	private ProductDBIF productDB;
+	private StockDBIF stockDB;
 	
 	
 	public ProductCtrl() throws DataAccessException {
