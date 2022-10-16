@@ -1,6 +1,9 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,8 +11,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import ctrl.OrderCtrl;
+import ctrl.ProductCtrl;
 import db.DataAccessException;
+import model.GunReplica;
 import model.Order;
+import model.OrderLine;
+import model.Product;
 
 class TestFinishOrder {
     
@@ -43,22 +50,40 @@ class TestFinishOrder {
 	void testStockUpdatesMultipleLocations() throws DataAccessException {
 	    oCtrl.createNewOrder();
         oCtrl.addCustomerByPhoneNo("+45 11111111");
-        oCtrl.addProductByProductId(1, 305); //Vi sikrer at begge locations tilgås
-        oCtrl.addProductByProductId(2, 305);
-        oCtrl.addProductByProductId(3, 405); //Priserne er taget efter current quantity i msdb
+        oCtrl.addProductByProductId(1, 310); //Vi sikrer at begge locations tilgås
+        oCtrl.addProductByProductId(2, 310); //Quantity opdateres til max stock hver gang min stock nåes
+        oCtrl.addProductByProductId(3, 310);
         oCtrl.addInvoice();
         oCtrl.finishOrder();
         //TODO assert
         
 	}
 	
+	@Disabled
 	@Test
 	void testStockDoesNotUpdateWithoutProducts() throws DataAccessException {
+	    //arrange
 	    oCtrl.createNewOrder();
+	    //act
 	    oCtrl.addCustomerByPhoneNo("+45 11111111");
+	    Product pgr = new GunReplica(".44", "silikone", 1, "Stor gøb", (float)250.51, (float)299.99, 240, "GunReplica", 1);
+        OrderLine ol = new OrderLine(pgr, 0); //orderline takes any quantity but the controller layer does not
 	    oCtrl.addInvoice();
 	    oCtrl.finishOrder();
-	    //TODO assert
+	    //assert
+	    assertNotEquals(ol, oCtrl.addProductByProductId(1, 0));
+	}
+	
+	@Test
+	void testStockDoesNotUpdateWithNegativeProducts() throws DataAccessException {
+	    //arrange
+	    oCtrl.createNewOrder();
+	    //act
+	    oCtrl.addCustomerByPhoneNo("+45 11111111");
+	    Product pgr = new GunReplica(".44", "silikone", 1, "Stor gøb", (float)250.51, (float)299.99, 240, "GunReplica", 1);
+	    OrderLine ol = new OrderLine(pgr, -1);
+	    //assert
+	    assertNotEquals(ol, oCtrl.addProductByProductId(1, -1));
 	}
 
 }

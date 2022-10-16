@@ -167,7 +167,7 @@ public class MainMenu extends JFrame {
 		txtQuantity.setColumns(10);
 		horizontalBox_1.add(txtQuantity);
 		
-		JButton btnSearchProduct = new JButton("S\u00F8g");
+		JButton btnSearchProduct = new JButton("Tilføj");
 		btnSearchProduct.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		horizontalBox_1.add(btnSearchProduct);
 		btnSearchProduct.addActionListener(new ActionListener() {
@@ -194,11 +194,12 @@ public class MainMenu extends JFrame {
 		JPanel panel_4 = new JPanel();
 		panel_2.add(panel_4);
 		
-		JButton btnAfslut = new JButton("Afslut");
+		JButton btnAfslut = new JButton("Godkend");
 		btnAfslut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addInvoice();
 				finishOrder();
+				close(); //Temporary, a better solution is to whipe the table models in the ui
 			}
 		});
 		btnAfslut.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -207,7 +208,7 @@ public class MainMenu extends JFrame {
 		JButton btnCancel = new JButton("Annuller");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//ShutDown
+				close();
 			}
 		});
 		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -311,6 +312,11 @@ public class MainMenu extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void close() {
+	    this.setVisible(false);
+        this.dispose();
 	}
 	
 	
