@@ -51,7 +51,10 @@ public class OrderCtrl {
 	
 	public OrderLine addProductByProductId(int productId, int quantity) {
 		Product p = pCtrl.findProductByProductId(productId);
-		OrderLine ol = new OrderLine(p, quantity);
+		OrderLine ol = null;
+		if(quantity > 0) {
+		    ol = new OrderLine(p, quantity);
+		}
 		newOrder.addOrderLine(ol);
 		
 		return ol;
