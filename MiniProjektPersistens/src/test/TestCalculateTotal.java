@@ -1,6 +1,9 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.sql.SQLException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,27 +16,22 @@ import model.Order;
 class TestCalculateTotal {
     
     private OrderCtrl oCtrl1;
-    private OrderCtrl oCtrl2;
-    private Order tempOrder;
 
 	@BeforeEach
 	void setUp() throws Exception {
 	    oCtrl1 = new OrderCtrl();
-	    oCtrl2 = new OrderCtrl();
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
 	    oCtrl1 = null;
-	    oCtrl2 = null;
 	}
 
 	@Test
-	void testDeliveryPriceAdded() throws DataAccessException {
+	void testDeliveryPriceAdded() throws DataAccessException, SQLException {
 		//ARRANGE
         //We make the orders
 	    oCtrl1.createNewOrder();
-	    oCtrl2.createNewOrder();
 	    
 	    //ACT
         //We add objects to the orders
@@ -41,54 +39,96 @@ class TestCalculateTotal {
 	    oCtrl1.addProductByProductId(1, 2);
 	    oCtrl1.addProductByProductId(2, 1);
 	    oCtrl1.addProductByProductId(3, 1);
+	    
 	    //We save the expected total of Order 1 for later
 	    double tempTotal = (299.99*2)+119.19+165.29;
 	    
-	    oCtrl2.addCustomerByPhoneNo("+45 97971010");
-	    oCtrl2.addProductByProductId(1, 9);
-	    
 	    //We add the invoice, and thus the total, to the orders
 	    oCtrl1.addInvoice();
-	    oCtrl2.addInvoice();
+	  
 	    //We make the total retrieveable
-	    Order tempO1 = oCtrl1.finishOrder();
-	    Order temp02 = oCtrl2.finishOrder();
+	    Order tempO = oCtrl1.finishOrder();
 	    
 	    //ASSERT
 	    //We check to see that the delivery price has been added
-	    assertEquals(tempTotal+45, tempO1.getInvoice().getInvoiceAmount());
-	    //We check to see that the delivery price has not been added
-	    assertEquals(299.99*9, temp02.getInvoice().getInvoiceAmount());
+	    assertEquals(tempTotal+45, tempO.getInvoice().getInvoiceAmount(), 0.0001); //delta values are added to stop failure when comparing decimals
+	}
+	
+	@Test
+	void testDeliveryPriceNotAdded() throws DataAccessException, SQLException {
+	    //arrange
+	    oCtrl1.createNewOrder();
+	    //act
+        oCtrl1.addCustomerByPhoneNo("+45 97971010");
+        oCtrl1.addProductByProductId(1, 9);
+        oCtrl1.addInvoice();
+        Order tempO = oCtrl1.finishOrder();
+        //assert
+        assertEquals(299.99*9, tempO.getInvoice().getInvoiceAmount(), 0.0001);
 	    
 	}
 	
 	@Test
-	void testDiscountAdded() throws DataAccessException {
+	void testDiscountAdded() throws DataAccessException, SQLException {
 	    //ARRANGE
         oCtrl1.createNewOrder();
-        oCtrl2.createNewOrder();
         
         //ACT
         //We add objects to the orders
         oCtrl1.addCustomerByPhoneNo("+45 88330000");
         oCtrl1.addProductByProductId(1, 4);
-        //We save the expected total of Order 1 for later
-        
-        oCtrl2.addCustomerByPhoneNo("+45 88330000");
-        oCtrl2.addProductByProductId(1, 6);
         
         //We add the invoice, and thus the total, to the orders
         oCtrl1.addInvoice();
-        oCtrl2.addInvoice();
+        
         //We make the total retrieveable
-        Order tempO1 = oCtrl1.finishOrder();
-        Order temp02 = oCtrl2.finishOrder();
+        Order tempO = oCtrl1.finishOrder();
         
         //ASSERT
         //We check to see that the discount has not been added
-        assertEquals(299.99*4, tempO1.getInvoice().getInvoiceAmount());
-        //We check to see that the discount has been added
-        assertEquals((299.99*6)*0.85, temp02.getInvoice().getInvoiceAmount());
+        assertEquals(299.99*4, tempO.getInvoice().getInvoiceAmount(), 0.0001);
+	}
+	
+	@Test
+	void testDiscountNotAdded() throws DataAccessException, SQLException {
+	    //arrange
+	    oCtrl1.createNewOrder();
+	    //act 
+        oCtrl1.addCustomerByPhoneNo("+45 88330000");
+        oCtrl1.addProductByProductId(1, 6);
+        oCtrl1.addInvoice();
+        Order tempO = oCtrl1.finishOrder();
+        //assert
+        assertEquals((299.99*6)*0.85, tempO.getInvoice().getInvoiceAmount(), 0.0001);
+	}
+	
+	@Test
+	void testNoProductsAdded() throws DataAccessException, SQLException {
+	    //arrange
+	    oCtrl1.createNewOrder();
+	    //act
+	    oCtrl1.addCustomerByPhoneNo("+45 11111111");
+	    oCtrl1.addInvoice();
+	    //assert
+	    //ingen exception bliver kastet
+	    assertThrows(DataAccessException.class, () -> oCtrl1.finishOrder());
+	    //arrange
+	    Order tempO = oCtrl1.finishOrder();
+	    //assert
+	    //fejler da delivery price stadig tilføjes
+	    assertEquals(0, tempO.getInvoice().getInvoiceAmount());
+	}
+	
+	@Test
+	void testMixedLocationProductsAdded() throws DataAccessException {
+	    //arrange
+        oCtrl1.createNewOrder();
+        //act
+        oCtrl1.addCustomerByPhoneNo("+45 11111111");
+        oCtrl1.addProductByProductId(3, 800); //TODO prøver at finde ekstra stock i øvrige locations og indexoutofbounds kommer dermed af, at systemet prøver at finde stock i en tredje location
+        oCtrl1.addInvoice();
+        //assert
+        assertThrows(DataAccessException.class, () -> oCtrl1.finishOrder());    
 	}
 
 }
