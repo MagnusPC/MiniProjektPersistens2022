@@ -1,6 +1,5 @@
 package test;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterEach;
@@ -12,7 +11,7 @@ import db.DataAccessException;
 import model.Invoice;
 import model.Order;
 
-class testAddInvoice {
+class TestAddInvoice {
 
     OrderCtrl oCtrl;
     
@@ -40,7 +39,7 @@ class testAddInvoice {
     void testInvoiceNotAdded() throws DataAccessException {
         oCtrl.createNewOrder();
         oCtrl.addCustomerByPhoneNo("+45 11111111");
-        assertThrows(NullPointerException.class, () -> oCtrl.addInvoice());
+        assertEquals(null, oCtrl.addInvoice());
     }
 
 }
