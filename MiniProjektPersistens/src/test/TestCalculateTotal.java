@@ -67,7 +67,7 @@ class TestCalculateTotal {
         assertEquals(299.99*9, tempO.getInvoice().getInvoiceAmount(), 0.0001);
 	}
 	
-	@Disabled("Better to make finishOrder fail")
+	@Disabled("Better to make finishOrder fail") //TODO invalid orders fail
 	@Test
 	void testDeliveryPriceNotAddedInvalidOrder() throws DataAccessException {
 	    oCtrl.createNewOrder();
