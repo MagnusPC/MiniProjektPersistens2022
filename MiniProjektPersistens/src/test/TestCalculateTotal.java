@@ -28,7 +28,7 @@ class TestCalculateTotal {
 	}
 
 	@Test
-	void testDeliveryPriceAddedValidOrder() throws DataAccessException, SQLException {
+	void testSingleProductWithDelivery() throws DataAccessException, SQLException {
 		//ARRANGE
         //We make the orders
 	    oCtrl.createNewOrder();
@@ -36,12 +36,7 @@ class TestCalculateTotal {
 	    //ACT
         //We add objects to the orders
 	    oCtrl.addCustomerByPhoneNo("+45 97971010");
-	    oCtrl.addProductByProductId(1, 2);
-	    oCtrl.addProductByProductId(2, 1);
 	    oCtrl.addProductByProductId(3, 1);
-	    
-	    //We save the expected total of Order 1 for later
-	    double tempTotal = (299.99*2)+119.19+165.29;
 	    
 	    //We add the invoice, and thus the total, to the orders
 	    oCtrl.addInvoice();
@@ -51,11 +46,11 @@ class TestCalculateTotal {
 	    
 	    //ASSERT
 	    //We check to see that the delivery price has been added
-	    assertEquals(tempTotal+45, tempO.getInvoice().getInvoiceAmount(), 0.0001); //delta values are added to stop failure when comparing decimals
+	    assertEquals(165.29+45, tempO.getInvoice().getInvoiceAmount(), 0.0001); //delta values are added to stop failure when comparing decimals
 	}
 	
 	@Test
-	void testDeliveryPriceNotAddedValidOrder() throws DataAccessException, SQLException {
+	void testMultipleProductsWithoutDelivery() throws DataAccessException, SQLException {
 	    //arrange
 	    oCtrl.createNewOrder();
 	    //act
@@ -78,14 +73,14 @@ class TestCalculateTotal {
 	}
 	
 	@Test
-	void testDiscountAddedValidOrder() throws DataAccessException, SQLException {
+	void testSingleProductWithoutDiscount() throws DataAccessException, SQLException {
 	    //ARRANGE
         oCtrl.createNewOrder();
         
         //ACT
         //We add objects to the orders
         oCtrl.addCustomerByPhoneNo("+45 88330000");
-        oCtrl.addProductByProductId(1, 4);
+        oCtrl.addProductByProductId(1, 1);
         
         //We add the invoice, and thus the total, to the orders
         oCtrl.addInvoice();
@@ -95,11 +90,11 @@ class TestCalculateTotal {
         
         //ASSERT
         //We check to see that the discount has not been added
-        assertEquals(299.99*4, tempO.getInvoice().getInvoiceAmount(), 0.0001);
+        assertEquals(299.99, tempO.getInvoice().getInvoiceAmount(), 0.0001);
 	}
 	
 	@Test
-	void testDiscountNotAddedValidOrder() throws DataAccessException, SQLException {
+	void testMultipleProductsWithDiscount() throws DataAccessException, SQLException {
 	    //arrange
 	    oCtrl.createNewOrder();
 	    //act 

@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
@@ -31,8 +32,15 @@ class TestFinishOrder {
 	void tearDown() throws Exception {
 	    oCtrl = null;
 	}
+	
+	@Test
+    void testOrderHigherThanStock() throws DataAccessException {
+        oCtrl.createNewOrder();
+        oCtrl.addCustomerByPhoneNo("+45 11111111");
+        assertThrows(DataAccessException.class, () -> oCtrl.addProductByProductId(3, 800)); //fejler fordi stock altid opdateres
+    }
+	//TODO nedenståede tests revideres
 
-	@Disabled("Just to be sure - only test one stock method at a time")
 	@Test
 	void testStockUpdatesOneLocation() throws DataAccessException {
 	    oCtrl.createNewOrder();
