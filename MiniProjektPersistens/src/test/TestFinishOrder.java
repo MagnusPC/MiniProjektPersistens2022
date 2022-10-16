@@ -49,9 +49,9 @@ class TestFinishOrder {
 	void testStockUpdatesMultipleLocations() throws DataAccessException {
 	    oCtrl.createNewOrder();
         oCtrl.addCustomerByPhoneNo("+45 11111111");
-        oCtrl.addProductByProductId(1, 200); //Vi sikrer at begge locations tilgås
-        oCtrl.addProductByProductId(2, 200);
-        oCtrl.addProductByProductId(3, 200);
+        oCtrl.addProductByProductId(1, 305); //Vi sikrer at begge locations tilgås
+        oCtrl.addProductByProductId(2, 305);
+        oCtrl.addProductByProductId(3, 405); //Priserne er taget efter current quantity i msdb
         oCtrl.addInvoice();
         oCtrl.finishOrder();
         //ASSERT
