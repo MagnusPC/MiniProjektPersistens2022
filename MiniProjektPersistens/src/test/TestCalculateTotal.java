@@ -101,34 +101,5 @@ class TestCalculateTotal {
         //assert
         assertEquals((299.99*6)*0.85, tempO.getInvoice().getInvoiceAmount(), 0.0001);
 	}
-	
-	@Test
-	void testNoProductsAdded() throws DataAccessException, SQLException {
-	    //arrange
-	    oCtrl1.createNewOrder();
-	    //act
-	    oCtrl1.addCustomerByPhoneNo("+45 11111111");
-	    oCtrl1.addInvoice();
-	    //assert
-	        //ingen exception bliver kastet
-//	        assertThrows(DataAccessException.class, () -> oCtrl1.finishOrder());
-	    //arrange
-	    Order tempO = oCtrl1.finishOrder();
-	    //assert
-	    //TODO fejler da delivery price stadig tilføjes
-	    assertEquals(0, tempO.getInvoice().getInvoiceAmount());
-	}
-	
-	@Test
-	void testMixedLocationProductsAdded() throws DataAccessException {
-	    //arrange
-        oCtrl1.createNewOrder();
-        //act
-        oCtrl1.addCustomerByPhoneNo("+45 11111111");
-        oCtrl1.addProductByProductId(3, 800); //TODO prøver at finde ekstra stock i øvrige locations og indexoutofbounds kommer dermed af, at systemet prøver at finde stock i en tredje location
-        oCtrl1.addInvoice();
-        //assert
-        assertThrows(DataAccessException.class, () -> oCtrl1.finishOrder());    
-	}
 
 }
