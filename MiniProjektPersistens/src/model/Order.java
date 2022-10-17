@@ -81,15 +81,7 @@ public class Order {
 	public String getOrderTypeString() {
 		return this.orderType.getType();
 	}
-	
-//	/**
-//	 * 
-//	 * @return invoice id
-//	 */
-//	public int getInvoiceNumber() {
-//		return this.invoice.getInvoiceId();
-//	}
-	
+
 	/**
 	 * 
 	 * @return customer id
@@ -202,4 +194,5 @@ public class Order {
 		setDeliveryDate(getDate().plusDays(3));
 		
 	}
+	
 }
