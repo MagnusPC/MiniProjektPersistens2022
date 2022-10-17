@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import ctrl.OrderCtrl;
 import db.DataAccessException;
 import model.GunReplica;
+import model.Order;
 import model.OrderLine;
 import model.Product;
 
@@ -43,8 +44,8 @@ class TestFinishOrder {
 	    oCtrl.addCustomerByPhoneNo("+45 11111111");
 	    oCtrl.addProductByProductId(1, 310);
 	    oCtrl.addInvoice();
-//	    Order tempO = oCtrl.finishOrder();
-//	    assertEquals(x, tempO.getStock()); //noget med at lægge stocks sammen måske, inde i order
+	    Order temp = oCtrl.finishOrder();
+//	    assertEquals(expStock, temp.getStock());
 	    
 	}
 	
@@ -83,9 +84,8 @@ class TestFinishOrder {
 	    oCtrl.addCustomerByPhoneNo("+45 11111111");
 	    oCtrl.addProductByProductId(3, 5);
 	    oCtrl.addInvoice();
-//	    Order tempO = oCtrl.finishOrder();
-//      assertEquals(x, tempO.getStock()); //noget med at lægge stocks sammen måske, inde i order
-	    //TODO få fat i stock db somehow og check om stocks matcher v fx print eller assertequals        
+	    Order temp = oCtrl.finishOrder();
+//      assertEquals(expStock, temp.getStock());        
 	}
 
 }
