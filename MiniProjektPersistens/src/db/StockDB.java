@@ -9,7 +9,7 @@ import model.*;
 public class StockDB implements StockDBIF{
 
 	private static final String getStorageLocationIdQ = "SELECT storageLocationId FROM Stock where productId = ?";
-	private static final String getQuantityQ = "SELECT quantity FROM Stock where storageLocationId = ? AND product Id = ?";
+	private static final String getQuantityQ = "SELECT quantity FROM Stock where storageLocationId = ? AND productId = ?";
 	private static final String updateStockQ = "UPDATE Stock SET quantity = ? where storageLocationId = ? AND productId = ?";
     
 	private PreparedStatement getStorageLocationId;
@@ -45,7 +45,7 @@ public class StockDB implements StockDBIF{
 				getQuantity.setInt(2, pId);
 				ResultSet rs2 = getQuantity.executeQuery();
 				if (rs2.next()) {
-				    quantities.add(rs.getString(1));
+				    quantities.add(rs2.getString(1));
 				}
 			}
 			
