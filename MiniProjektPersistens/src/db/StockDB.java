@@ -8,22 +8,45 @@ import model.*;
 
 public class StockDB implements StockDBIF{
 
-	
+	private static final String getStorageLocationIdQ = "SELECT storageLocationId FROM Stock where productId = ?";
+	private static final String getQuantityQ = "SELECT quantity FROM Stock where storageLocationId = ? AND product Id = ?";
+	private static final String updateStockQ = "UPDATE Stock SET quantity = ? where storageLocationId = ? AND productId = ?";
+    
+	private PreparedStatement getStorageLocationId;
+	private PreparedStatement getQuantity;
+	private PreparedStatement updateStock;
+    
+    public StockDB() throws SQLException{
+        getStorageLocationId = DBConnection.getInstance().getConnection().prepareStatement(getStorageLocationIdQ);
+        getQuantity = DBConnection.getInstance().getConnection().prepareStatement(getQuantityQ);
+        updateStock = DBConnection.getInstance().getConnection().prepareStatement(updateStockQ);
+    }
+    
+    
 	@Override
-	public void updateStock(Order order) throws DataAccessException {
+	public void updateStock(Order order) throws DataAccessException, SQLException {
 		for (int i = 0; i < order.getOrderLines().size(); i++) {
 			OrderLine ol = order.getOrderLines().get(i);
 			
 			int q = ol.getQuantity();
 			int pId = ol.getProductId();
 			
-			String sqlQuery2 = ("select storageLocationId from Stock where productId = " + pId);
-			ArrayList<String> ids = processQueryReturnArrayList(sqlQuery2);
+			getStorageLocationId.setInt(1, pId);
+			ResultSet rs = getStorageLocationId.executeQuery();
+			
+			ArrayList<String> ids = new ArrayList<>();
+			if (rs.next()) {
+			    ids.add(rs.getString(1));
+			}
 			
 			ArrayList<String> quantities = new ArrayList<>();
 			for (int j = 0; j < ids.size(); j++) {
-				String sqlQuery3 = ("select quantity from Stock where storageLocationId = " + ids.get(j) + " AND productId = " + pId);
-				quantities.add(processQueryReturnString(sqlQuery3));
+				getQuantity.setString(1, ids.get(j));
+				getQuantity.setInt(2, pId);
+				rs = getQuantity.executeQuery();
+				if (rs.next()) {
+				    quantities.add(rs.getString(1));
+				}
 			}
 		
 			HashMap<String, String> idAndQuantity = new HashMap<>();
@@ -77,11 +100,11 @@ public class StockDB implements StockDBIF{
 	
 	
 	private void makeUpdateQuery(String id, int productId, int quant) {
-		String updatedQuantity = "";
-		String sql = ("select minStock from Stock where storageLocationId = " + id + " AND productId = " + productId);
-		String minStock = processQueryReturnString(sql);
-		String sql2 = ("select maxStock from Stock where storageLocationId = " + id + " AND productId =  " + productId);
-		String maxStock = processQueryReturnString(sql2);
+		String updatedQuantity = String.valueOf(quant);
+	    //String sql = ("select minStock from Stock where storageLocationId = " + id + " AND productId = " + productId);
+		//String minStock = processQueryReturnString(sql);
+		//String sql2 = ("select maxStock from Stock where storageLocationId = " + id + " AND productId =  " + productId);
+		//String maxStock = processQueryReturnString(sql2);
 		
 		//if (quant < Integer.parseInt(minStock)) {
 			//updatedQuantity = maxStock;

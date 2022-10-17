@@ -1,5 +1,7 @@
 package ctrl;
 
+import java.sql.SQLException;
+
 import db.*;
 import model.*;
 
@@ -11,7 +13,12 @@ public class ProductCtrl {
 	
 	public ProductCtrl() throws DataAccessException {
 		productDB = new ProductDB();
-		stockDB = new StockDB();
+		try {
+            stockDB = new StockDB();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 	}
 	
 	public Product findProductByProductId(int productId) {
@@ -28,7 +35,7 @@ public class ProductCtrl {
 	public void updateStock(Order order) {
 		try {
 			stockDB.updateStock(order);
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
