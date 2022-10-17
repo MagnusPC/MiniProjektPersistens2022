@@ -34,7 +34,7 @@ class TestFinishOrder {
     void testOrderHigherThanStock() throws DataAccessException {
         oCtrl.createNewOrder();
         oCtrl.addCustomerByPhoneNo("+45 11111111");
-        assertThrows(DataAccessException.class, () -> oCtrl.addProductByProductId(3, 800));
+        assertThrows(DataAccessException.class, () -> oCtrl.addProductByProductId(3, 650));
     }
 	
 	@Disabled("Until next iteration")

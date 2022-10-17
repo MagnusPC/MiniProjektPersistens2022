@@ -50,7 +50,7 @@ public class OrderDB implements OrderDBIF{
 	@Override
 	public int selectTopOrderId() throws SQLException {
 		
-		ResultSet rs = selectTopOrderId.executeQuery(); //Ved ikke om man får den nyeste når transaction ikke er commited
+		ResultSet rs = selectTopOrderId.executeQuery();
 		int orderId = 0;
 		
 		if(rs.next()) {

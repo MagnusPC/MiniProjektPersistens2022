@@ -51,7 +51,7 @@ public class MainMenu extends JFrame {
 	 */
 	
 	//private OrderController oCtrl;
-	//Todo
+	//TODO
 	
 	/**
 	 * Launch the application.
