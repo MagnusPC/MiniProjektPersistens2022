@@ -31,6 +31,10 @@ public class StockDB implements StockDBIF{
 			int q = ol.getQuantity();
 			int pId = ol.getProductId();
 			
+			
+			//We have the serial number of the orderline's product, so now we execute a query 
+            //to get the id of all the Stock tuples/rows connected to the product. We return
+            // an ArrayList of these ids.
 			getStorageLocationId.setInt(1, pId);
 			ResultSet rs = getStorageLocationId.executeQuery();
 			
@@ -38,6 +42,8 @@ public class StockDB implements StockDBIF{
 			while (rs.next()) {
 			    ids.add(rs.getString(1));
 			}
+			//We loop over all the ids we just found, and execute a query on all of them to get
+            //their quantities, and then add the quantities to an arraylist.
 			
 			ArrayList<String> quantities = new ArrayList<>();
 			for (int j = 0; j < ids.size(); j++) {
@@ -48,8 +54,13 @@ public class StockDB implements StockDBIF{
 				    quantities.add(rs2.getString(1));
 				}
 			}
-			
+			 //This next part may need to change. I wasn't sure which stock to remove quantity from,
+             //so i decided that i would remove it from the one with the largest quantity. Then, if 
+             //that wasn't enough, i will remove it from another one, and so on, until we have removed
+             //the correct amount of quantity.
 		
+			//First, i will put each stock's id and quantity together in a HashMap, so we don't
+            //lose track of them.
 			HashMap<String, String> idAndQuantity = new HashMap<>();
 			for (int l = 0; l < ids.size(); l++) {
 				idAndQuantity.put(ids.get(l), quantities.get(l));
@@ -140,53 +151,4 @@ public class StockDB implements StockDBIF{
 		return sorted;
 	}
 	
-	
-	private void processQueryUpdate(String query) {
-		try {
-			Connection conn = DBConnection.getInstance().getConnection();
-			Statement stmt = conn.createStatement();
-			stmt.executeQuery(query);
-		}
-		catch(Exception e) {
-		    ;
-		}
-	}
-	
-	
-	
-	private String processQueryReturnString(String query) {
-		String string = "";
-		try {
-			Connection conn = DBConnection.getInstance().getConnection();
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			
-			while(rs.next()) {
-				string += rs.getString(1);
-			}
-		}
-		catch(Exception e) {
-		    e.printStackTrace();
-		}
-		return string;
-	}
-	
-	
-	
-	private ArrayList<String> processQueryReturnArrayList(String query) {
-		ArrayList<String> strings = new ArrayList<>();
-		try {
-			Connection conn = DBConnection.getInstance().getConnection();
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			
-			while(rs.next()) {
-				strings.add(rs.getString(1));
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return strings;
-	}
 }
