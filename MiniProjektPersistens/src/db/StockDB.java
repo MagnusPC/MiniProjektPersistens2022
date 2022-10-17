@@ -35,7 +35,7 @@ public class StockDB implements StockDBIF{
 			ResultSet rs = getStorageLocationId.executeQuery();
 			
 			ArrayList<String> ids = new ArrayList<>();
-			if (rs.next()) {
+			while (rs.next()) {
 			    ids.add(rs.getString(1));
 			}
 			
@@ -43,11 +43,12 @@ public class StockDB implements StockDBIF{
 			for (int j = 0; j < ids.size(); j++) {
 				getQuantity.setString(1, ids.get(j));
 				getQuantity.setInt(2, pId);
-				rs = getQuantity.executeQuery();
-				if (rs.next()) {
+				ResultSet rs2 = getQuantity.executeQuery();
+				if (rs2.next()) {
 				    quantities.add(rs.getString(1));
 				}
 			}
+			
 		
 			HashMap<String, String> idAndQuantity = new HashMap<>();
 			for (int l = 0; l < ids.size(); l++) {
@@ -99,7 +100,7 @@ public class StockDB implements StockDBIF{
 	
 	
 	
-	private void makeUpdateQuery(String id, int productId, int quant) {
+	private void makeUpdateQuery(String id, int productId, int quant) throws SQLException {
 		String updatedQuantity = String.valueOf(quant);
 	    //String sql = ("select minStock from Stock where storageLocationId = " + id + " AND productId = " + productId);
 		//String minStock = processQueryReturnString(sql);
@@ -112,10 +113,11 @@ public class StockDB implements StockDBIF{
 		//else {
 			//updatedQuantity = String.valueOf(quant);
 		//}
+		updateStock.setString(1, updatedQuantity);
+		updateStock.setString(2, id);
+		updateStock.setInt(3, productId);
+		int val = updateStock.executeUpdate();
 		
-		String finalQuery = ("update Stock set quantity = " + updatedQuantity + " where storageLocationId = " + id + " AND productId = " + productId);
-		
-		processQueryUpdate(finalQuery);
 	}
 	
 	
