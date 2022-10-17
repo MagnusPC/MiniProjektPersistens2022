@@ -13,18 +13,16 @@ import db.DataAccessException;
 
 class TestOrderPersisted {
     
-//    OrderDBIF odb;
     OrderCtrl oCtrl;
 
     @BeforeEach
     void setUp() throws Exception {
-//        odb = new OrderDB();
         oCtrl = new OrderCtrl();
     }
 
     @AfterEach
     void tearDown() throws Exception {
-//        odb = null;
+        oCtrl = null;
     }
 
     @Test
