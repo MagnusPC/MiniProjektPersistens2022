@@ -27,8 +27,9 @@ class TestCalculateTotal {
 	    oCtrl = null;
 	}
 
+//	@Disabled
 	@Test
-	void testSingleProductWithDelivery() throws DataAccessException, SQLException {
+	void testSingleProductWithDelivery() throws DataAccessException {
 		//ARRANGE
         //We make the orders
 	    oCtrl.createNewOrder();
@@ -46,11 +47,12 @@ class TestCalculateTotal {
 	    
 	    //ASSERT
 	    //We check to see that the delivery price has been added
-	    assertEquals(165.29+45, tempO.getInvoice().getInvoiceAmount(), 0.0001); //delta values are added to stop failure when comparing decimals
+	    assertEquals((float)165.29+45, tempO.getInvoice().getInvoiceAmount()); 
 	}
 	
+//	@Disabled
 	@Test
-	void testMultipleProductsWithoutDelivery() throws DataAccessException, SQLException {
+	void testMultipleProductsWithoutDelivery() throws DataAccessException {
 	    //arrange
 	    oCtrl.createNewOrder();
 	    //act
@@ -59,11 +61,12 @@ class TestCalculateTotal {
         oCtrl.addInvoice();
         Order tempO = oCtrl.finishOrder();
         //assert
-        assertEquals(299.99*9, tempO.getInvoice().getInvoiceAmount(), 0.0001);
+        assertEquals((float)299.99*9, tempO.getInvoice().getInvoiceAmount());
 	}
 	
+//	@Disabled
 	@Test
-	void testSingleProductWithoutDiscount() throws DataAccessException, SQLException {
+	void testSingleProductWithoutDiscount() throws DataAccessException {
 	    //ARRANGE
         oCtrl.createNewOrder();
         
@@ -80,11 +83,11 @@ class TestCalculateTotal {
         
         //ASSERT
         //We check to see that the discount has not been added
-        assertEquals(299.99, tempO.getInvoice().getInvoiceAmount(), 0.0001);
+        assertEquals((float)299.99, tempO.getInvoice().getInvoiceAmount());
 	}
 	
 	@Test
-	void testMultipleProductsWithDiscount() throws DataAccessException, SQLException {
+	void testMultipleProductsWithDiscount() throws DataAccessException {
 	    //arrange
 	    oCtrl.createNewOrder();
 	    //act 
@@ -93,7 +96,7 @@ class TestCalculateTotal {
         oCtrl.addInvoice();
         Order tempO = oCtrl.finishOrder();
         //assert
-        assertEquals((299.99*6)*0.85, tempO.getInvoice().getInvoiceAmount(), 0.0001);
+        assertEquals((float)(299.99*6)*0.85, tempO.getInvoice().getInvoiceAmount());
 	}
 
 }
